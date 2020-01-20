@@ -10,7 +10,7 @@ namespace Assets
     public class WarriorClass : BaseClass
     {
 
-        WarriorClass()
+        public WarriorClass()
         {
             Health = 300;
             Attack = 30;
