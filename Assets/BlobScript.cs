@@ -44,7 +44,15 @@ public class BlobScript : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        if ((damage - Defense) <= 0)
+        {
+            return;
+        }
+        Health -= (damage - Defense);
+        if (Health <= 0)
+        {
+            GameObject.Destroy(gameObject);
+        }
     }
 
     [SerializeField]
@@ -69,8 +77,6 @@ public class BlobScript : MonoBehaviour
 
     public void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
     {
-        Debug.Log("Blob Takes a turn at:" + Initiative);
-
         _brain.TakeTurn(me, allyBlobs, enemyBlobs);
     }
 

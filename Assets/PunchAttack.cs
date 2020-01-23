@@ -4,28 +4,14 @@ using UnityEngine;
 
 public class PunchAttack : BaseAttack
 {
-     
-    
-    
-    
-    
-    
-    
-    // Start is called before the first frame update
-    void Start()
+
+    public override bool FireAttack(BlobScript attacker, BlobScript target)
     {
         
-    }
-    public bool fireAttack(BlobScript attacker, BlobScript target)
-    {
-        //Not done, needs a lot of work.
-        
+        target.TakeDamage(attackDamage);
+
 
         return true;
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

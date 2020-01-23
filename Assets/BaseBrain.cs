@@ -24,13 +24,6 @@ namespace Assets
         /// <returns></returns>
         public Vector3 MoveTo(Vector2 myPos, Vector2 otherPos, float moveSpeed)
         {
-
-            
-
-            Debug.Log(Vector2.Distance(myPos, otherPos));
-
-
-
             if (Vector3.Distance(myPos, otherPos) > moveSpeed)
             {
                 var temp1 = Vector3.Distance(myPos, otherPos);
@@ -47,8 +40,6 @@ namespace Assets
 
                 return new Vector2(otherPos.x + 1 / temp1 * xdif, otherPos.y + 1 / temp1 * ydif);
             }
-
-
         }
 
         public BlobScript ClostedBlob(BlobScript myPos, List<BlobScript> otherPositions)

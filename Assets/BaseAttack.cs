@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseAttack : MonoBehaviour
+public class BaseAttack 
 {
-    List<BlobScript> possibleTargets = new List<BlobScript>();
+    private List<BlobScript> possibleTargets = new List<BlobScript>();
     //attacks range
-    int attackRange;
+    private const int attackRange = 1;
+    protected const int attackDamage = 10; //TODO attackes should have different damage
     //exclude self from targets?
-    bool excludeSelf;
-    BlobScript myBlob;
+    private bool excludeSelf;
+    private BlobScript myBlob;
     //Enter attack
     //Send back targets
     //Select Primary Target or Cancel
     //Fire attack
-    public List<BlobScript> getPossibleTargets(BlobScript attacker)
+    public List<BlobScript> GetPossibleTargets(BlobScript attacker, List<BlobScript> pTargets)
     {
         //Empty target list
-        possibleTargets = new List<BlobScript>();
+        possibleTargets = pTargets;
+        var tempTargets = new List<BlobScript>(pTargets);
         //get input attacker
         myBlob = attacker;
         //Where are they?
@@ -27,9 +29,9 @@ public class BaseAttack : MonoBehaviour
         //Search map for targets
         foreach(BlobScript thisBlob in possibleTargets)
         {
-            if( !(calcDistince(myBlob, thisBlob) <= attackRange) )
+            if( !InRange(myBlob, thisBlob) )
             {
-                bool removeSuccess = possibleTargets.Remove(thisBlob);
+                bool removeSuccess = tempTargets.Remove(thisBlob);
                 if(!removeSuccess)
                 {
                     Debug.Log("Failed to remove blobscript, " + thisBlob + "from attack targets. Error may have occured.");
@@ -38,24 +40,31 @@ public class BaseAttack : MonoBehaviour
             }
 
         }
-        return possibleTargets;
+        possibleTargets = tempTargets; //TODO fritz is this the expected behavior of this method? I modefied it a touch
+        Debug.Log(possibleTargets.Count);
+        return tempTargets;
     }
-    private List<BlobScript> getMap()
+    private List<BlobScript> GetMap()
     {
         return new List<BlobScript>();
     }
-    private int calcDistince(BlobScript attacker, BlobScript target)
+    private float calcDistince(BlobScript attacker, BlobScript target)
     {
         //calculate range between blob attacker, and blob target
-        return 1;
+        return Vector3.Distance(attacker.transform.position, target.transform.position);
     }
     //Returns true if attack successfully fires. Returns false if target is illegal, or attack fails for some reason. 
-    public bool fireAttack(BlobScript attacker, BlobScript target)
+    public virtual bool FireAttack(BlobScript attacker, BlobScript target)
     {
         //Not done, needs a lot of work.
-
+        target.TakeDamage(attackDamage);
 
         return true;
+    }
+
+    private bool InRange(BlobScript attacker, BlobScript target)
+    {
+        return calcDistince(attacker, target) <= attackRange;
     }
     
 

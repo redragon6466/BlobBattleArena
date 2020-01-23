@@ -18,8 +18,16 @@ namespace Assets
             _me = me;
             _allyBlobs = allyBlobs;
             _enemyBlobs = enemyBlobs;
+
+            var a = new PunchAttack();
+            var targets = a.GetPossibleTargets(me, enemyBlobs.ToList());
+            if (targets.Count > 0)
+            {
+                a.FireAttack(me, targets.First());
+            }
+
             var target = DetermineTarget();
-            Debug.Log(string.Format("Move from: {0}, To: {1}", me.transform.position, target.transform.position));
+            
             me.transform.position = MoveTo(me.transform.position, target.transform.position, 5f);
         }
 
@@ -27,6 +35,8 @@ namespace Assets
         {
             return ClostedBlob(_me, _enemyBlobs.ToList());
         }
+
+
 
     }
 }

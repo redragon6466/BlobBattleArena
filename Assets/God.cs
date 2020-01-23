@@ -78,14 +78,14 @@ public class God : MonoBehaviour
             var temp = TeamOneBlobs.ToList();
             temp.Remove(up);
 
-            up.GetComponent<BlobScript>().TakeTurn(up, temp.ToArray(), TeamTwoBlobs); //TODO fix
+            up.TakeTurn(up, temp.ToArray(), TeamTwoBlobs); //TODO fix maybe?
         }
         else if (TeamTwoBlobs.Contains(up))
         {
             var temp = TeamTwoBlobs.ToList();
             temp.Remove(up);
 
-            up.GetComponent<BlobScript>().TakeTurn(up, temp.ToArray(), TeamOneBlobs); //TODO fix
+            up.TakeTurn(up, temp.ToArray(), TeamOneBlobs); //TODO fix maybe?
         }
 
 
