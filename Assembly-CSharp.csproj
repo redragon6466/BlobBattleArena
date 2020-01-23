@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
@@ -53,12 +53,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Attacks.cs" />
+     <Compile Include="Assets\BaseAttack.cs" />
      <Compile Include="Assets\BaseBrain.cs" />
      <Compile Include="Assets\BaseClass.cs" />
      <Compile Include="Assets\BlobScript.cs" />
      <Compile Include="Assets\God.cs" />
      <Compile Include="Assets\IBrain.cs" />
      <Compile Include="Assets\IClass.cs" />
+     <Compile Include="Assets\PunchAttack.cs" />
      <Compile Include="Assets\TestBrain.cs" />
      <Compile Include="Assets\WarriorBrain.cs" />
      <Compile Include="Assets\WarriorClass.cs" />

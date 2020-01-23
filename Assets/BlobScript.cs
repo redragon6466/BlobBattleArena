@@ -21,11 +21,30 @@ public class BlobScript : MonoBehaviour
     private int Movement;
     private IClass _class;
     private IBrain _brain;
-    
+
+    public int GetAttack()
+    {
+        return Attack;
+    }
+
+    public int GetDefense()
+    {
+        return Defense;
+    }
+
+    public int GetMovement()
+    {
+        return Movement;
+    }
 
     public int GetInitiative()
     {
         return Initiative;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
     }
 
     [SerializeField]
@@ -52,8 +71,14 @@ public class BlobScript : MonoBehaviour
     {
         Debug.Log("Blob Takes a turn at:" + Initiative);
 
+        
+
         _brain.TakeTurn(me, allyBlobs, enemyBlobs);
     }
+
+
+   
+
 
 
 

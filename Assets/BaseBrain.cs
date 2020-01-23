@@ -24,9 +24,13 @@ namespace Assets
         /// <returns></returns>
         public Vector3 MoveTo(Vector3 myPos, Vector3 otherPos, float moveSpeed)
         {
-            if ((otherPos - myPos).magnitude > moveSpeed)
+
+            Debug.Log((myPos - otherPos).magnitude);
+            if ((myPos - otherPos).magnitude > moveSpeed)
             {
                 var temp1 = myPos.magnitude + moveSpeed;
+                Debug.Log("MS: " + temp1);
+                Debug.Log(string.Format("{0}, {1}, {2}", myPos.x * temp1 / myPos.magnitude, myPos.y * temp1 / myPos.magnitude, myPos.z * temp1 / myPos.magnitude));
                 return new Vector3(myPos.x * temp1 / myPos.magnitude, myPos.y * temp1 / myPos.magnitude, myPos.z * temp1 / myPos.magnitude);
             }
             else
