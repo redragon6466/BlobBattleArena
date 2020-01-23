@@ -39,7 +39,7 @@ public class God : MonoBehaviour
         {
             var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
-            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new TestBrain());
+            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
             TeamOneBlobs[i] = blobT1.GetComponent<BlobScript>();
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
