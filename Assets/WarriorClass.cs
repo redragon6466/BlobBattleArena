@@ -20,7 +20,7 @@ namespace Assets
 
         }
 
-        public override void TakeTurn(GameObject[] allyBlobs, GameObject[] enemyBlobs)
+        public override void TakeTurn( GameObject[] allyBlobs, GameObject[] enemyBlobs)
         {
             //do stuff
         }

@@ -7,10 +7,12 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class WarriorBrain : IBrain
+    public class TestBrain : IBrain
     {
+
         public void TakeTurn(GameObject me, GameObject[] allyBlobs, GameObject[] enemyBlobs)
         {
+            //me.transform.position.x = me.transform.position.x + 1;
         }
     }
 }

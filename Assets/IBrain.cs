@@ -9,6 +9,6 @@ namespace Assets
 {
     public interface IBrain
     {
-        void TakeTurn(GameObject[] allyBlobs, GameObject[] enemyBlobs); 
+        void TakeTurn(GameObject me, GameObject[] allyBlobs, GameObject[] enemyBlobs); 
     }
 }

@@ -44,7 +44,7 @@ public class God : MonoBehaviour
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
-            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
+            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new TestBrain());
             TeamTwoBlobs[i] = blobT2;
 
         }
@@ -64,7 +64,22 @@ public class God : MonoBehaviour
         _turnDone = false;
         var up = _turnOrder.Dequeue();
 
-        up.GetComponent<BlobScript>().TakeTurn()
+        if (TeamOneBlobs.Contains(up))
+        {
+            var temp = TeamOneBlobs.ToList();
+            temp.Remove(up);
+
+            up.GetComponent<BlobScript>().TakeTurn(up, temp.ToArray(), TeamTwoBlobs); //TODO fix
+        }
+        else if (TeamTwoBlobs.Contains(up))
+        {
+            var temp = TeamTwoBlobs.ToList();
+            temp.Remove(up);
+
+            up.GetComponent<BlobScript>().TakeTurn(up, temp.ToArray(), TeamOneBlobs); //TODO fix
+        }
+
+
 
         _turnOrder.Enqueue(up);
         _turnDone = true;
@@ -83,7 +98,6 @@ public class God : MonoBehaviour
 
     private void BuildTurnOrder()
     {
-        System.Console.WriteLine("Build Turn Order");
         var turnList = new List<GameObject>();
         foreach (var obj in TeamOneBlobs)
         {
