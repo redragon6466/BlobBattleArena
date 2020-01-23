@@ -18,7 +18,9 @@ public class God : MonoBehaviour
 
     Queue<GameObject> _turnOrder;
 
-    private bool _turnDone = true;
+    private bool _turnDone = false;
+    private int _turnDelay = 100;
+    private int _count = 0;
 
     public God()
     {
@@ -29,6 +31,7 @@ public class God : MonoBehaviour
     void Start()
     {
         StartBattle();
+        _turnDone = true;
     }
 
     private void CreateTeams()
@@ -39,12 +42,12 @@ public class God : MonoBehaviour
         {
             var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
-            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
+            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new TestBrain());
             TeamOneBlobs[i] = blobT1;
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
-            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new TestBrain());
+            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
             TeamTwoBlobs[i] = blobT2;
 
         }
@@ -53,6 +56,15 @@ public class God : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_count < 100)
+        {
+            _count++;
+            return;
+        }
+        else
+        {
+            _count = 0;
+        }
         if (_turnDone)
         {
             NextTurn();
