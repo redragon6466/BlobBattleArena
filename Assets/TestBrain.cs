@@ -10,7 +10,7 @@ namespace Assets
     public class TestBrain : BaseBrain
     {
 
-        public override void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
+        public override void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
             me.transform.position = new Vector3(me.transform.position.x + 3, me.transform.position.y);
         }

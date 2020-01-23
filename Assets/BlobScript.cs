@@ -21,6 +21,7 @@ public class BlobScript : MonoBehaviour
     private int Movement;
     private IClass _class;
     private IBrain _brain;
+    private God _god;
 
     public int GetAttack()
     {
@@ -44,14 +45,11 @@ public class BlobScript : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if ((damage - Defense) <= 0)
-        {
-            return;
-        }
-        Health -= (damage - Defense);
+        Health -= damage;
+
         if (Health <= 0)
         {
-            GameObject.Destroy(gameObject);
+            _god.KillBlob(this);
         }
     }
 
@@ -64,7 +62,7 @@ public class BlobScript : MonoBehaviour
     {
     }
 
-    public void SetClass(IClass clas, IBrain brain)
+    public void SetClass(IClass clas, IBrain brain, God god)
     {
         _class = clas;
         _brain = brain;
@@ -73,17 +71,13 @@ public class BlobScript : MonoBehaviour
         Defense = _class.Defense;
         Movement = _class.Movement;
         Initiative = Random.Range(0, 20);
+        _god = god;
     }
 
-    public void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
+    public void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
     {
         _brain.TakeTurn(me, allyBlobs, enemyBlobs);
     }
-
-
-   
-
-
 
 
     // Update is called once per frame

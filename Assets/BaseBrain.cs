@@ -10,7 +10,7 @@ namespace Assets
     public class BaseBrain : IBrain
     {
 
-        public virtual void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
+        public virtual void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
             
         }

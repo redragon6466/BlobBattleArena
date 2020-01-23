@@ -10,10 +10,10 @@ namespace Assets
     public class WarriorBrain : BaseBrain
     {
         private BlobScript _me; 
-        private BlobScript[] _allyBlobs; 
-        private BlobScript[] _enemyBlobs;
+        private List<BlobScript> _allyBlobs; 
+        private List<BlobScript> _enemyBlobs;
 
-        public override void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
+        public override void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
             _me = me;
             _allyBlobs = allyBlobs;
@@ -24,6 +24,7 @@ namespace Assets
             if (targets.Count > 0)
             {
                 a.FireAttack(me, targets.First());
+                return;
             }
 
             var target = DetermineTarget();

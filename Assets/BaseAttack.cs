@@ -6,8 +6,8 @@ public class BaseAttack
 {
     private List<BlobScript> possibleTargets = new List<BlobScript>();
     //attacks range
-    private const int attackRange = 1;
-    protected const int attackDamage = 10; //TODO attackes should have different damage
+    private const int attackRange = 3;
+    protected const int attackDamage = 50; //TODO attackes should have different damage
     //exclude self from targets?
     private bool excludeSelf;
     private BlobScript myBlob;
@@ -41,7 +41,7 @@ public class BaseAttack
 
         }
         possibleTargets = tempTargets; //TODO fritz is this the expected behavior of this method? I modefied it a touch
-        Debug.Log(possibleTargets.Count);
+        
         return tempTargets;
     }
     private List<BlobScript> GetMap()

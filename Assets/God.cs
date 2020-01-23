@@ -7,21 +7,30 @@ using UnityEngine;
 public class God : MonoBehaviour
 {
     [SerializeField]
-    private BlobScript[] TeamOneBlobs;
+    private List<BlobScript> TeamOneBlobs;
     [SerializeField]
-    private BlobScript[] TeamTwoBlobs;
+    private List<BlobScript> TeamTwoBlobs;
     [SerializeField]
     GameObject blobPrefab;
 
     Queue<BlobScript> _turnOrder;
 
     private bool _turnDone = false;
+    private bool _battleing = false;
     private int _turnDelay = 10;
     private int _count = 0;
 
     public God()
     {
         //blob
+    }
+
+    public void KillBlob(BlobScript blob)
+    {
+        TeamOneBlobs.Remove(blob);
+        TeamTwoBlobs.Remove(blob);
+
+        GameObject.Destroy(blob.gameObject);
     }
 
     // Start is called before the first frame update
@@ -33,19 +42,19 @@ public class God : MonoBehaviour
 
     private void CreateTeams()
     {
-        TeamOneBlobs = new BlobScript[3];
-        TeamTwoBlobs = new BlobScript[3];
+        TeamOneBlobs = new List<BlobScript>();
+        TeamTwoBlobs = new List<BlobScript>();
         for (int i = 0; i < 3; i++)
         {
             var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
-            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
-            TeamOneBlobs[i] = blobT1.GetComponent<BlobScript>();
+            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain(), this);
+            TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
-            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
-            TeamTwoBlobs[i] = blobT2.GetComponent<BlobScript>();
+            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain(), this);
+            TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
 
         }
     }
@@ -53,6 +62,10 @@ public class God : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_battleing)
+        {
+            return;
+        }
         if (_count < _turnDelay)
         {
             _count++;
@@ -70,6 +83,12 @@ public class God : MonoBehaviour
 
     private void NextTurn()
     {
+
+        if (TeamOneBlobs.Count == 0 || TeamTwoBlobs.Count == 0)
+        {
+            EndBattle();
+        }
+
         _turnDone = false;
         var up = _turnOrder.Dequeue();
 
@@ -78,14 +97,14 @@ public class God : MonoBehaviour
             var temp = TeamOneBlobs.ToList();
             temp.Remove(up);
 
-            up.TakeTurn(up, temp.ToArray(), TeamTwoBlobs); //TODO fix maybe?
+            up.TakeTurn(up, temp, TeamTwoBlobs); //TODO fix maybe?
         }
         else if (TeamTwoBlobs.Contains(up))
         {
             var temp = TeamTwoBlobs.ToList();
             temp.Remove(up);
 
-            up.TakeTurn(up, temp.ToArray(), TeamOneBlobs); //TODO fix maybe?
+            up.TakeTurn(up, temp, TeamOneBlobs); //TODO fix maybe?
         }
 
 
@@ -98,11 +117,13 @@ public class God : MonoBehaviour
     {
         CreateTeams();
         BuildTurnOrder();
+        _battleing = true;
     }
 
     public void EndBattle()
     {
-
+        _battleing = false;
+        Debug.Log("Someone Won!");
     }
 
     private void BuildTurnOrder()
