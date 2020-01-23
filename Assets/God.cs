@@ -64,7 +64,7 @@ public class God : MonoBehaviour
         _turnDone = false;
         var up = _turnOrder.Dequeue();
 
-        //up.GetComponent<BlobScript>().ta
+        up.GetComponent<BlobScript>().TakeTurn()
 
         _turnOrder.Enqueue(up);
         _turnDone = true;
