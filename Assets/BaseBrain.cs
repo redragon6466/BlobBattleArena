@@ -10,7 +10,7 @@ namespace Assets
     public class BaseBrain : IBrain
     {
 
-        public virtual void TakeTurn(GameObject me, GameObject[] allyBlobs, GameObject[] enemyBlobs)
+        public virtual void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
         {
             
         }
@@ -22,16 +22,20 @@ namespace Assets
         /// <param name="otherPos"></param>
         /// <param name="moveSpeed"></param>
         /// <returns></returns>
-        public Vector3 MoveTo(Vector3 myPos, Vector3 otherPos, float moveSpeed)
+        public Vector3 MoveTo(Vector2 myPos, Vector2 otherPos, float moveSpeed)
         {
 
-            Debug.Log((myPos - otherPos).magnitude);
-            if ((myPos - otherPos).magnitude > moveSpeed)
+            Debug.Log(Vector2.Distance(myPos, otherPos));
+
+
+
+            if (Vector3.Distance(myPos, otherPos) > moveSpeed)
             {
-                var temp1 = myPos.magnitude + moveSpeed;
-                Debug.Log("MS: " + temp1);
-                Debug.Log(string.Format("{0}, {1}, {2}", myPos.x * temp1 / myPos.magnitude, myPos.y * temp1 / myPos.magnitude, myPos.z * temp1 / myPos.magnitude));
-                return new Vector3(myPos.x * temp1 / myPos.magnitude, myPos.y * temp1 / myPos.magnitude, myPos.z * temp1 / myPos.magnitude);
+                var temp1 = Vector3.Distance(myPos, otherPos);
+                var xdif =  otherPos.x - myPos.x;
+                var ydif =  otherPos.y - myPos.y;
+
+                return new Vector2(myPos.x + moveSpeed / temp1 * xdif, myPos.y + moveSpeed / temp1 * ydif);
             }
             else
             {
@@ -41,14 +45,14 @@ namespace Assets
 
         }
 
-        public GameObject ClostedBlob(GameObject myPos, List<GameObject> otherPositions)
+        public BlobScript ClostedBlob(BlobScript myPos, List<BlobScript> otherPositions)
         {
             var distances = DistancesToMulti(myPos, otherPositions);
 
             return distances.FirstOrDefault().Item2;
         }
 
-        public GameObject FarthestBlob(GameObject myPos, List<GameObject> otherPositions)
+        public BlobScript FarthestBlob(BlobScript myPos, List<BlobScript> otherPositions)
         {
             var distances = DistancesToMulti(myPos, otherPositions);
 
@@ -61,13 +65,13 @@ namespace Assets
         /// <param name="myPos"></param>
         /// <param name="otherPositions"></param>
         /// <returns></returns>
-        public List<Tuple<float, GameObject>> DistancesToMulti(GameObject myPos, List<GameObject> otherPositions)
+        public List<Tuple<float, BlobScript>> DistancesToMulti(BlobScript myPos, List<BlobScript> otherPositions)
         {
-            List<Tuple<float, GameObject>> distances = new List<Tuple<float, GameObject>>();
+            List<Tuple<float, BlobScript>> distances = new List<Tuple<float, BlobScript>>();
 
             foreach (var pos in otherPositions)
             {
-                distances.Add(new Tuple<float, GameObject>(Vector3.Distance(myPos.transform.position, pos.transform.position), pos));
+                distances.Add(new Tuple<float, BlobScript>(Vector3.Distance(myPos.transform.position, pos.transform.position), pos));
             }
 
 

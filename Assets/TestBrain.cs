@@ -10,9 +10,9 @@ namespace Assets
     public class TestBrain : BaseBrain
     {
 
-        public override void TakeTurn(GameObject me, GameObject[] allyBlobs, GameObject[] enemyBlobs)
+        public override void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
         {
-            //me.transform.position.x = me.transform.position.x + 1;
+            me.transform.position = new Vector3(me.transform.position.x + 3, me.transform.position.y);
         }
     }
 }

@@ -7,19 +7,16 @@ using UnityEngine;
 public class God : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] TeamOneBlobs;
+    private BlobScript[] TeamOneBlobs;
     [SerializeField]
-    private GameObject[] TeamTwoBlobs;
+    private BlobScript[] TeamTwoBlobs;
     [SerializeField]
     GameObject blobPrefab;
 
-    [SerializeField]
-    List<GameObject> queueToList;
-
-    Queue<GameObject> _turnOrder;
+    Queue<BlobScript> _turnOrder;
 
     private bool _turnDone = false;
-    private int _turnDelay = 100;
+    private int _turnDelay = 10;
     private int _count = 0;
 
     public God()
@@ -36,19 +33,19 @@ public class God : MonoBehaviour
 
     private void CreateTeams()
     {
-        TeamOneBlobs = new GameObject[3];
-        TeamTwoBlobs = new GameObject[3];
+        TeamOneBlobs = new BlobScript[3];
+        TeamTwoBlobs = new BlobScript[3];
         for (int i = 0; i < 3; i++)
         {
             var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
             blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new TestBrain());
-            TeamOneBlobs[i] = blobT1;
+            TeamOneBlobs[i] = blobT1.GetComponent<BlobScript>();
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
             blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain());
-            TeamTwoBlobs[i] = blobT2;
+            TeamTwoBlobs[i] = blobT2.GetComponent<BlobScript>();
 
         }
     }
@@ -56,7 +53,7 @@ public class God : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_count < 100)
+        if (_count < _turnDelay)
         {
             _count++;
             return;
@@ -110,7 +107,7 @@ public class God : MonoBehaviour
 
     private void BuildTurnOrder()
     {
-        var turnList = new List<GameObject>();
+        var turnList = new List<BlobScript>();
         foreach (var obj in TeamOneBlobs)
         {
             turnList.Add(obj);
@@ -119,10 +116,9 @@ public class God : MonoBehaviour
         {
             turnList.Add(obj);
         }
-        List<GameObject> sorted = turnList.OrderByDescending(x => x.GetComponent<BlobScript>().GetInitiative()).ToList();
+        List<BlobScript> sorted = turnList.OrderByDescending(x => x.GetInitiative()).ToList();
 
-        _turnOrder = new Queue<GameObject>(sorted);
-        queueToList = _turnOrder.ToList();
+        _turnOrder = new Queue<BlobScript>(sorted);
     }
 
 

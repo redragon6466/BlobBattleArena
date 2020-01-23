@@ -67,11 +67,9 @@ public class BlobScript : MonoBehaviour
         Initiative = Random.Range(0, 20);
     }
 
-    public void TakeTurn(GameObject me, GameObject[] allyBlobs, GameObject[] enemyBlobs)
+    public void TakeTurn(BlobScript me, BlobScript[] allyBlobs, BlobScript[] enemyBlobs)
     {
         Debug.Log("Blob Takes a turn at:" + Initiative);
-
-        
 
         _brain.TakeTurn(me, allyBlobs, enemyBlobs);
     }
