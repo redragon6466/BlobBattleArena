@@ -33,6 +33,12 @@ public class BlobScript : MonoBehaviour
         return Defense;
     }
 
+    public int GetHealth()
+    {
+        return Health;
+    }
+
+
     public int GetMovement()
     {
         return Movement;
