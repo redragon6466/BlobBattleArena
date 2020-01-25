@@ -58,7 +58,6 @@
      <Compile Include="Assets\BaseClass.cs" />
      <Compile Include="Assets\BlobScript.cs" />
      <Compile Include="Assets\God.cs" />
-     <Compile Include="Assets\HPTracker.cs" />
      <Compile Include="Assets\IBrain.cs" />
      <Compile Include="Assets\IClass.cs" />
      <Compile Include="Assets\PunchAttack.cs" />
