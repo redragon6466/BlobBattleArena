@@ -3,12 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class BlobScript : MonoBehaviour
 {
-
-
     [SerializeField]
     private int Health;
     [SerializeField]
@@ -22,6 +21,7 @@ public class BlobScript : MonoBehaviour
     private IClass _class;
     private IBrain _brain;
     private God _god;
+    private Slider _healthBar;
 
     public int GetAttack()
     {
@@ -66,6 +66,9 @@ public class BlobScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
+        _healthBar.maxValue = Health;
+        _healthBar.value = Health;
     }
 
     public void SetClass(IClass clas, IBrain brain, God god)
@@ -89,6 +92,6 @@ public class BlobScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        _healthBar.value = Health;
     }
 }

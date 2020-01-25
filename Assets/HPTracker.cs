@@ -9,13 +9,16 @@ public class HPTracker : MonoBehaviour
     BlobScript myParent;
     bool hasParent;
     Text myText;
+    Slider _healthBar;
     GameObject parentBlob;
 
     // Start is called before the first frame update
     void Start()
     {
-        myText = this.GetComponent<Text>(); 
-        myText.text = "potato";
+        //myText = this.GetComponent<Text>();
+        //myText.text = "potato";
+        //_healthBar = this.GetComponent<Slider>();
+
         setMyParent();
         
 
@@ -37,7 +40,8 @@ public class HPTracker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = parentBlob.transform.position;
-        myText.text = myParent.GetHealth().ToString();
+        //this.transform.position = parentBlob.transform.position;
+        //myText.text = myParent.GetHealth().ToString();
+        //_healthBar.value = myParent.GetHealth();
     }
 }
