@@ -21,6 +21,8 @@ public class God : MonoBehaviour
     private int _count = 0;
 
     private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new TestBrain(), };
+    private Vector2[] _testOnePos = { new Vector2(5,15), new Vector2(0, 15), new Vector2(-5, 15), };
+    private Vector2[] _testTwoPos = { new Vector2(-17, -5), new Vector2(-18, 4), new Vector2(-18, -10), };
 
     public God()
     {
@@ -48,12 +50,13 @@ public class God : MonoBehaviour
         TeamTwoBlobs = new List<BlobScript>();
         for (int i = 0; i < 3; i++)
         {
-            var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
+            //var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
+            var blobT1 = Instantiate(blobPrefab, _testOnePos[i], Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
             blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamOneBrains[i], this);
             TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
 
-            var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
+            var blobT2 = Instantiate(blobPrefab, _testTwoPos[i], Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
             blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain(), this);
             TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
