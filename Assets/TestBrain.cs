@@ -12,7 +12,7 @@ namespace Assets
 
         public override void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
-            me.transform.position = new Vector3(me.transform.position.x + 3, me.transform.position.y);
+            //me.transform.position = new Vector3(me.transform.position.x + 3, me.transform.position.y);
         }
     }
 }

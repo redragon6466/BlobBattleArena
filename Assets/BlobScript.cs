@@ -22,6 +22,7 @@ public class BlobScript : MonoBehaviour
     private IBrain _brain;
     private God _god;
     private Slider _healthBar;
+    private bool _isStealth;
 
     public int GetAttack()
     {
@@ -47,6 +48,16 @@ public class BlobScript : MonoBehaviour
     public int GetInitiative()
     {
         return Initiative;
+    }
+
+    public BrainEnum GetBrainType()
+    {
+        return _brain.GetBrainType();
+    }
+
+    public bool IsStealth()
+    {
+        return _isStealth;
     }
 
     public void TakeDamage(int damage)

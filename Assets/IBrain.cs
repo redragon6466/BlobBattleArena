@@ -9,6 +9,9 @@ namespace Assets
 {
     public interface IBrain
     {
-        void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs); 
+        void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs);
+
+
+        BrainEnum GetBrainType();
     }
 }

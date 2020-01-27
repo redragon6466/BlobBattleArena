@@ -15,6 +15,11 @@ namespace Assets
             
         }
 
+        public virtual BrainEnum GetBrainType()
+        {
+            return BrainEnum.Test;
+        }
+
         /// <summary>
         /// Get the length of it, L, and multiply all components by M/L, where M is the new length of the vector.
         /// </summary>

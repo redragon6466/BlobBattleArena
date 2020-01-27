@@ -32,6 +32,11 @@ namespace Assets
             me.transform.position = MoveTo(me.transform.position, target.transform.position, 5f);
         }
 
+        public override BrainEnum GetBrainType()
+        {
+            return BrainEnum.Warrior;
+        }
+
         private BlobScript DetermineTarget()
         {
             return ClostedBlob(_me, _enemyBlobs.ToList());

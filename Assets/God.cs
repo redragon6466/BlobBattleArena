@@ -20,6 +20,8 @@ public class God : MonoBehaviour
     private int _turnDelay = 10;
     private int _count = 0;
 
+    private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new TestBrain(), };
+
     public God()
     {
         //blob
@@ -48,7 +50,7 @@ public class God : MonoBehaviour
         {
             var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
             blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
-            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain(), this);
+            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamOneBrains[i], this);
             TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
 
             var blobT2 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y - 15, transform.position.z), Quaternion.identity);
