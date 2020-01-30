@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class God : MonoBehaviour
 {
+
+
     [SerializeField]
     private List<BlobScript> TeamOneBlobs;
     [SerializeField]
@@ -20,7 +23,8 @@ public class God : MonoBehaviour
     private int _turnDelay = 10;
     private int _count = 0;
 
-    private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new TestBrain(), };
+    private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new WarriorBrain(), };
+    private IBrain[] _teamTwoBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
     private Vector2[] _testOnePos = { new Vector2(5,15), new Vector2(0, 15), new Vector2(-5, 15), };
     private Vector2[] _testTwoPos = { new Vector2(-17, -5), new Vector2(-18, 4), new Vector2(-18, -10), };
 
@@ -42,6 +46,21 @@ public class God : MonoBehaviour
     {
         StartBattle();
         _turnDone = true;
+
+        Task.Run(() => StartTwitchBot());
+    }
+
+    private void StartTwitchBot()
+    {
+        var ircBot = new TwitchChatBot(
+        server: "irc.chat.twitch.tv",
+        port: 6667,
+        nick: "BlobArenaCoordinator",
+        channel: "kalloc656"
+        );
+
+        ircBot.Start();
+
     }
 
     private void CreateTeams()
@@ -58,7 +77,7 @@ public class God : MonoBehaviour
 
             var blobT2 = Instantiate(blobPrefab, _testTwoPos[i], Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
-            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), new WarriorBrain(), this);
+            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamTwoBrains[i], this);
             TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
 
         }
