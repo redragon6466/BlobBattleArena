@@ -65,7 +65,6 @@
      <Compile Include="Assets\PunchAttack.cs" />
      <Compile Include="Assets\TestBrain.cs" />
      <Compile Include="Assets\TwitchChatBot.cs" />
-     <Compile Include="Assets\TwitchInfo.Designer.cs" />
      <Compile Include="Assets\WarriorBrain.cs" />
      <Compile Include="Assets\WarriorClass.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">

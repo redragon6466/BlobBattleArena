@@ -50,6 +50,20 @@ public class God : MonoBehaviour
         Task.Run(() => StartTwitchBot());
     }
 
+    public void Awake()
+    {
+        int gameStatusCount = FindObjectsOfType<God>().Length;
+        if (gameStatusCount > 1)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject); //when the scene changes don't destroy the game object that owns this
+        }
+    }
+
     private void StartTwitchBot()
     {
         var ircBot = new TwitchChatBot(
