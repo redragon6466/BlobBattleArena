@@ -29,6 +29,8 @@ namespace Assets
 
         private int countofThing = 0;
 
+        private bool stop = false;
+
 
         public TwitchChatBot(string server, int port,  string nick, string channel, int maxRetries = 3)
         {
@@ -43,6 +45,7 @@ namespace Assets
         {
             var retry = false;
             var retryCount = 0;
+            stop = false;
             do
             {
                 try
@@ -52,6 +55,10 @@ namespace Assets
                     using (var reader = new StreamReader(stream))
                     using (var writer = new StreamWriter(stream))
                     {
+                        if (stop)
+                        {
+                            return;
+                        }
 
                         writer.WriteLine(string.Format(oauthFormat, oauth));
                         writer.Flush();
@@ -114,7 +121,10 @@ namespace Assets
             } while (retry);
         }
 
-
+        public void OnEnd()
+        {
+            stop = true;
+        }
 
         public void Connect()
         {

@@ -1,9 +1,13 @@
 ﻿using Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class God : MonoBehaviour
 {
@@ -15,36 +19,40 @@ public class God : MonoBehaviour
     private List<BlobScript> TeamTwoBlobs;
     [SerializeField]
     GameObject blobPrefab;
+   
+    
+    private Text countDown;
+    private float _vsTimer = 0.0f;
+    private const int VsScreenTime = 10;
 
     Queue<BlobScript> _turnOrder;
 
     private bool _turnDone = false;
     private bool _battleing = false;
-    private int _turnDelay = 10;
+    private int _turnDelay = 11; //Add an extra 1 as the timer imediately starts at 10.9 which rounds down to 10, instead of 9.9 => 9
     private int _count = 0;
+    private const float _vsScale = .25f;
+    private const float _battleScale = .38f;
 
     private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new WarriorBrain(), };
     private IBrain[] _teamTwoBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
-    private Vector2[] _testOnePos = { new Vector2(5,15), new Vector2(0, 15), new Vector2(-5, 15), };
-    private Vector2[] _testTwoPos = { new Vector2(-17, -5), new Vector2(-18, 4), new Vector2(-18, -10), };
+    private Vector2[] _testOnePos = { new Vector2(5,14), new Vector2(0, 14), new Vector2(-5, 14), };
+    private Vector2[] _testTwoPos = { new Vector2(5, -14), new Vector2(0, -14), new Vector2(-5, -14), };
+    
+    private Vector2[] _blueStartPos = { new Vector2(-3.67f, 2.76f), new Vector2(-3.67f, -.1f), new Vector2(-3.67f, -3.5f), };
+    private Vector2[] _redStartPos = { new Vector2(3.55f, 2.91f), new Vector2(3.55f, -.1f), new Vector2(3.55f, -3.5f), };
+
+    private TwitchChatBot tcb;
 
     public God()
     {
         //blob
     }
 
-    public void KillBlob(BlobScript blob)
-    {
-        TeamOneBlobs.Remove(blob);
-        TeamTwoBlobs.Remove(blob);
-
-        GameObject.Destroy(blob.gameObject);
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        StartBattle();
+        StartVsScreen();
         _turnDone = true;
 
         Task.Run(() => StartTwitchBot());
@@ -66,35 +74,15 @@ public class God : MonoBehaviour
 
     private void StartTwitchBot()
     {
-        var ircBot = new TwitchChatBot(
+        tcb = new TwitchChatBot(
         server: "irc.chat.twitch.tv",
         port: 6667,
         nick: "BlobArenaCoordinator",
         channel: "kalloc656"
         );
 
-        ircBot.Start();
+        tcb.Start();
 
-    }
-
-    private void CreateTeams()
-    {
-        TeamOneBlobs = new List<BlobScript>();
-        TeamTwoBlobs = new List<BlobScript>();
-        for (int i = 0; i < 3; i++)
-        {
-            //var blobT1 = Instantiate(blobPrefab, new Vector3(transform.position.x + (i - 1) * 4, transform.position.y + 15, transform.position.z), Quaternion.identity);
-            var blobT1 = Instantiate(blobPrefab, _testOnePos[i], Quaternion.identity);
-            blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
-            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamOneBrains[i], this);
-            TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
-
-            var blobT2 = Instantiate(blobPrefab, _testTwoPos[i], Quaternion.identity);
-            blobT2.GetComponent<SpriteRenderer>().color = Color.red;
-            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamTwoBrains[i], this);
-            TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
-
-        }
     }
 
     // Update is called once per frame
@@ -102,29 +90,127 @@ public class God : MonoBehaviour
     {
         if (!_battleing)
         {
-            return;
-        }
-        if (_count < _turnDelay)
-        {
-            _count++;
+            _vsTimer -= Time.deltaTime;
+            if (countDown != null)
+            {
+                countDown.text = Math.Floor(_vsTimer).ToString();
+                if (_vsTimer <= 0)
+                {
+                    StartBattle();
+                }
+            }
+
             return;
         }
         else
         {
-            _count = 0;
+            if (_count < _turnDelay)
+            {
+                _count++;
+                return;
+            }
+            else
+            {
+                _count = 0;
+            }
+            if (_turnDone)
+            {
+                NextTurn();
+            }
         }
-        if (_turnDone)
+
+    }
+
+    public void OnDestroy()
+    {
+        tcb.OnEnd();
+    }
+    
+
+
+    public void StartVsScreen()
+    {
+        var temp = GameObject.FindGameObjectsWithTag("CountDown");
+        if (temp.Count() != 0)
         {
-            NextTurn();
+            Debug.Log("found text");
+            countDown = temp.FirstOrDefault().GetComponent<Text>();
+        }
+            
+
+
+        CreateLineup();
+        StartCountdown();
+
+         _battleing = false;
+    }
+
+    public void StartBattle()
+    {
+        SceneManager.LoadScene("Arena");
+
+        BuildTurnOrder();
+        MoveTeams();
+        _battleing = true;
+    }
+
+    public void EndBattle()
+    {
+        _battleing = false;
+
+        _turnOrder.Clear();
+        var temp = TeamOneBlobs.ToList();
+
+        foreach (var blob in temp)
+        {
+            KillBlob(blob);
+        }
+        temp = TeamTwoBlobs.ToList();
+        foreach (var blob in temp)
+        {
+            KillBlob(blob);
+        }
+
+
+        SceneManager.LoadScene("Lineup");
+
+
+        StartVsScreen();
+    }
+    public void KillBlob(BlobScript blob)
+    {
+        TeamOneBlobs.Remove(blob);
+        TeamTwoBlobs.Remove(blob);
+
+        GameObject.Destroy(blob.gameObject);
+    }
+
+
+    private void MoveTeams()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            TeamOneBlobs[i].transform.position = _testOnePos[i];
+            TeamOneBlobs[i].transform.localScale = new Vector2(_battleScale, _battleScale);
+            TeamOneBlobs[i].GetComponentInChildren<Canvas>().enabled = true;
+            TeamTwoBlobs[i].transform.position = _testTwoPos[i];
+            TeamTwoBlobs[i].transform.localScale = new Vector2(_battleScale, _battleScale);
+            TeamTwoBlobs[i].GetComponentInChildren<Canvas>().enabled = true;
         }
     }
 
+
     private void NextTurn()
     {
-
+        
         if (TeamOneBlobs.Count == 0 || TeamTwoBlobs.Count == 0)
         {
             EndBattle();
+        }
+
+        if (_turnOrder.Count == 0)
+        {
+            return;
         }
 
         _turnDone = false;
@@ -151,17 +237,28 @@ public class God : MonoBehaviour
         _turnDone = true;
     }
 
-    public void StartBattle()
-    {
-        CreateTeams();
-        BuildTurnOrder();
-        _battleing = true;
-    }
 
-    public void EndBattle()
+    private void CreateLineup()
     {
-        _battleing = false;
-        Debug.Log("Someone Won!");
+        TeamOneBlobs = new List<BlobScript>();
+        TeamTwoBlobs = new List<BlobScript>();
+        for (int i = 0; i < 3; i++)
+        {
+            var blobT1 = Instantiate(blobPrefab, _blueStartPos[i], Quaternion.identity);
+            blobT1.GetComponent<SpriteRenderer>().color = Color.blue;
+            blobT1.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamOneBrains[i], this);
+            blobT1.GetComponentInChildren<Canvas>().enabled = false;
+            blobT1.transform.localScale = new Vector2(_vsScale, _vsScale);
+            TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
+
+            var blobT2 = Instantiate(blobPrefab, _redStartPos[i], Quaternion.identity);
+            blobT2.GetComponent<SpriteRenderer>().color = Color.red;
+            blobT2.GetComponent<BlobScript>().SetClass(new WarriorClass(), _teamTwoBrains[i], this);
+            blobT2.GetComponentInChildren<Canvas>().enabled = false;
+            blobT2.transform.localScale = new Vector2(_vsScale, _vsScale);
+            TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
+
+        }
     }
 
     private void BuildTurnOrder()
@@ -181,5 +278,13 @@ public class God : MonoBehaviour
     }
 
 
+    private void StartCountdown()
+    {
+        _vsTimer = VsScreenTime;
+    }
+
     
+
+
+
 }

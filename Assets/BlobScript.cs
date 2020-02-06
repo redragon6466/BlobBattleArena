@@ -82,6 +82,20 @@ public class BlobScript : MonoBehaviour
         _healthBar.value = Health;
     }
 
+    public void Awake()
+    {
+        int gameStatusCount = FindObjectsOfType<BlobScript>().Length;
+        if (gameStatusCount > 6)
+        {
+            gameObject.SetActive(false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            DontDestroyOnLoad(gameObject); //when the scene changes don't destroy the game object that owns this
+        }
+    }
+
     public void SetClass(IClass clas, IBrain brain, God god)
     {
         _class = clas;
