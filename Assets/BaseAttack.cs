@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class BaseAttack 
 {
-    private List<BlobScript> possibleTargets = new List<BlobScript>();
+    protected List<BlobScript> possibleTargets = new List<BlobScript>();
     //attacks range
-    private const int attackRange = 3;
+    protected const int attackRange = 3;
     protected const int attackDamage = 50; //TODO attackes should have different damage
     //exclude self from targets?
-    private bool excludeSelf;
-    private BlobScript myBlob;
+    protected bool excludeSelf;
+    protected BlobScript myBlob;
     //Enter attack
     //Send back targets
     //Select Primary Target or Cancel
@@ -44,11 +44,11 @@ public class BaseAttack
         
         return tempTargets;
     }
-    private List<BlobScript> GetMap()
+    protected List<BlobScript> GetMap()
     {
         return new List<BlobScript>();
     }
-    private float calcDistince(BlobScript attacker, BlobScript target)
+    protected float calcDistince(BlobScript attacker, BlobScript target)
     {
         //calculate range between blob attacker, and blob target
         return Vector3.Distance(attacker.transform.position, target.transform.position);
@@ -62,7 +62,7 @@ public class BaseAttack
         return true;
     }
 
-    private bool InRange(BlobScript attacker, BlobScript target)
+    protected bool InRange(BlobScript attacker, BlobScript target)
     {
         return calcDistince(attacker, target) <= attackRange;
     }
