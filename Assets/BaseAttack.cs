@@ -58,7 +58,7 @@ public class BaseAttack
     {
         //Not done, needs a lot of work.
         target.TakeDamage(attackDamage);
-
+        
         return true;
     }
 
