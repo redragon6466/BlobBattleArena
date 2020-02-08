@@ -28,8 +28,11 @@ namespace Assets
             }
 
             var target = DetermineTarget();
-            
+
             source.transform.position = MoveTo(source.transform.position, target.transform.position, 5f);
+            //source.GetComponent<Rigidbody2D>().MovePosition(MoveTo(source.transform.position, target.transform.position, 5f));
+
+            UnityEngine.Object.FindObjectOfType<God>().EndTurn();
         }
 
         public override BrainEnum GetBrainType()

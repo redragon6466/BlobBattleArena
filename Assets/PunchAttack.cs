@@ -12,7 +12,7 @@ public class PunchAttack : BaseAttack
         if (true)
         //replace above statement with a range checker
         {
-            showAttack(target, source);
+            ShowAttack(target, source);
             int dmg = source.GetAttack() - target.GetDefense();
             if (dmg < 0)
             {
@@ -22,17 +22,21 @@ public class PunchAttack : BaseAttack
             target.TakeDamage(dmg);
         }
 
+        
+
         return true;
     }
+
+
     //clean up parent/attacker references
-    public void showAttack(BlobScript target, BlobScript source)
+    public void ShowAttack(BlobScript target, BlobScript source)
     {
         //var NewArrow = Instantiate()
         var pointyThing = (GameObject)Resources.Load("Prefabs/PointyArrow", typeof(GameObject));
         //Debug.Log(pointyThing);
         var myThing = UnityEngine.Object.Instantiate(pointyThing,new Vector3(source.transform.position.x, source.transform.position.y,source.transform.position.z-1), Quaternion.identity);
         ArrowScript myScript = myThing.GetComponent<ArrowScript>();
-        myScript.setTargetAndParent(source, target);
+        myScript.setTargetAndParent(source, target, this);
     }
 
 }

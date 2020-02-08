@@ -7,6 +7,7 @@ public class ArrowScript : MonoBehaviour
 {
     protected BlobScript creator;
     protected BlobScript target;
+    protected BaseAttack sourceAttack;
     protected int speed;
     protected int state = 1;
     protected int timeToLive = 180;
@@ -28,11 +29,13 @@ public class ArrowScript : MonoBehaviour
         state = stateValue;
         return true;
     }
-    public void setTargetAndParent(BlobScript parent, BlobScript enemy)
+    public void setTargetAndParent(BlobScript parent, BlobScript enemy, BaseAttack source)
     {
         creator = parent;
         target = enemy;
-       
+        sourceAttack = source;
+
+
         setState(2);
     }
 
@@ -41,32 +44,32 @@ public class ArrowScript : MonoBehaviour
     void Update()
     {
         //Debug.Log(state);
-        if(state == 1)
+        switch (state)
         {
-            //do nothing
-        }
-        else if(state == 2)
-        {
-            MoveToTarget();
-        }
-        else if(state == 3)
-        {
-            timeToLive--;
-            GetComponent<Rigidbody2D>().velocity = transform.up * 50 * Time.deltaTime;
-            if(timeToLive <= 0)
-            {
-                setState(4);
-            }
-        }
-        else if(state == 4)
-        {
-            CleanUp();
-        }
-        else
-        {
-            Debug.Log("Arrow Script, Bad State Value");
+            case 1:
+                return;
+            case 2:
+                MoveToTarget();
+                break;
+            case 3:
+                timeToLive--;
+                GetComponent<Rigidbody2D>().velocity = transform.up * 200 * Time.deltaTime;
+                if (timeToLive <= 0 || (Math.Abs(target.transform.position.x - gameObject.transform.position.x) < 1 && Math.Abs(target.transform.position.y - gameObject.transform.position.y) < 1))
+                {
+                    setState(4);
+                }
+                break;
+            case 4:
+                Debug.Log("Attack Animation Done");
+                FindObjectOfType<God>().EndTurn();
+                CleanUp();
+                break;
+            default:
+                Debug.Log("Arrow Script, Bad State Value");
+                break;
         }
     }
+
 
     private void MoveToTarget()
     {
@@ -79,7 +82,8 @@ public class ArrowScript : MonoBehaviour
         float TargetLocY;
         float AttackerLocX;
         float AttackerLocY;
-        if(target.gameObject == null || creator.gameObject == null)
+
+        if(target == null || creator == null )
         {
             setState(4);
             return;
@@ -88,7 +92,7 @@ public class ArrowScript : MonoBehaviour
 
 
         //TargetLocX = target.gameObject.transform.position.x;
-       // TargetLocY = target.gameObject.transform.position.y;
+        // TargetLocY = target.gameObject.transform.position.y;
         //AttackerLocX = creator.gameObject.transform.position.x;
         //AttackerLocY = creator.gameObject.transform.position.y;
 
@@ -97,9 +101,16 @@ public class ArrowScript : MonoBehaviour
         //float hyp = (float)Math.Sqrt(Math.Pow(TargetLocY - AttackerLocX,(float)2) + Math.Pow(TargetLocX - AttackerLocX,(float)2));
         // float sine = opp / hyp;
         //Debug.Log(sine);
+        
+
 
         Vector3 targetDir = target.transform.position - creator.transform.position;
         float angle = Vector3.Angle(targetDir, transform.up);
+
+        if (creator.transform.position.x < target.transform.position.x)
+        {
+            angle = angle * -1;
+        }
 
 
         //this.transform.Rotate(0, 0, sine * (float)(180/Math.PI), Space.World);

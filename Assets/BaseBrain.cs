@@ -27,24 +27,27 @@ namespace Assets
         /// <param name="otherPos"></param>
         /// <param name="moveSpeed"></param>
         /// <returns></returns>
-        public Vector3 MoveTo(Vector2 sourcePos, Vector2 otherPos, float moveSpeed)
+        public Vector3 MoveTo(Vector2 sourcePos, Vector2 targetPos, float moveSpeed)
         {
-            if (Vector3.Distance(myPos, otherPos) > moveSpeed)
+            if (Vector3.Distance(sourcePos, targetPos) > moveSpeed)
             {
-                var temp1 = Vector3.Distance(myPos, otherPos);
-                var xdif =  otherPos.x - myPos.x;
-                var ydif =  otherPos.y - myPos.y;
+                var temp1 = Vector3.Distance(sourcePos, targetPos);
+                var xdif = targetPos.x - sourcePos.x;
+                var ydif = targetPos.y - sourcePos.y;
 
-                return new Vector2(myPos.x + moveSpeed / temp1 * xdif, myPos.y + moveSpeed / temp1 * ydif);
+                return new Vector2(sourcePos.x + moveSpeed / temp1 * xdif, sourcePos.y + moveSpeed / temp1 * ydif);
             }
             else
             {
-                var temp1 = Vector3.Distance(myPos, otherPos);
-                var xdif = myPos.x - otherPos.x;
-                var ydif = myPos.y - otherPos.y;
+                var temp1 = Vector3.Distance(sourcePos, targetPos);
+                var xdif = sourcePos.x - targetPos.x;
+                var ydif = sourcePos.y - targetPos.y;
 
-                return new Vector2(otherPos.x + 1 / temp1 * xdif, otherPos.y + 1 / temp1 * ydif);
+
+                return new Vector2(targetPos.x + 1 / temp1 * xdif, targetPos.y + 1 / temp1 * ydif);
             }
+
+
         }
 
         public BlobScript ClostedBlob(BlobScript myPos, List<BlobScript> otherPositions)

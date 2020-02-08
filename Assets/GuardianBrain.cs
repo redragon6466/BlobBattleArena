@@ -23,24 +23,24 @@ namespace Assets
             if (!PriorityTargetsToDefend())
             {
                 var a = new PunchAttack();
-                var targets = a.GetPossibleTargets(me, enemyBlobs.ToList());
+                var targets = a.GetPossibleTargets(source, enemyBlobs.ToList());
                 if (targets.Count > 0)
                 {
-                    a.FireAttack(me, targets.First());
+                    a.FireAttack(source, targets.First());
                     return;
                 }
 
                 var target = DetermineTarget();
 
-                me.transform.position = MoveTo(me.transform.position, target.transform.position, 5f);
+                source.transform.position = MoveTo(source.transform.position, target.transform.position, 5f);
             }
 
             var moveTo = DetermineAverageOfPos();
 
-            me.transform.position = MoveTo(me.transform.position, moveTo, 5f);
+            source.transform.position = MoveTo(source.transform.position, moveTo, 5f);
 
 
-
+            UnityEngine.Object.FindObjectOfType<God>().EndTurn();
         }
 
         public override BrainEnum GetBrainType()

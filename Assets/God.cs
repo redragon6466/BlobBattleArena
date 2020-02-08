@@ -23,13 +23,13 @@ public class God : MonoBehaviour
     
     private Text countDown;
     private float _vsTimer = 0.0f;
-    private const int VsScreenTime = 10;
+    private const int VsScreenTime = 11; //Add an extra 1 as the timer imediately starts at 10.9 which rounds down to 10, instead of 9.9 => 9
 
     Queue<BlobScript> _turnOrder;
 
     private bool _turnDone = false;
     private bool _battleing = false;
-    private int _turnDelay = 11; //Add an extra 1 as the timer imediately starts at 10.9 which rounds down to 10, instead of 9.9 => 9
+    private int _turnDelay = 5;
     private int _count = 0;
     private const float _vsScale = .25f;
     private const float _battleScale = .38f;
@@ -43,6 +43,7 @@ public class God : MonoBehaviour
     private Vector2[] _redStartPos = { new Vector2(3.55f, 2.91f), new Vector2(3.55f, -.1f), new Vector2(3.55f, -3.5f), };
 
     private TwitchChatBot tcb;
+
 
     public God()
     {
@@ -116,6 +117,11 @@ public class God : MonoBehaviour
             }
             if (_turnDone)
             {
+                foreach (var item in _turnOrder)
+                {
+                    item.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+                }
+
                 NextTurn();
             }
         }
@@ -124,7 +130,13 @@ public class God : MonoBehaviour
 
     public void OnDestroy()
     {
-        tcb.OnEnd();
+        //tcb.OnEnd();
+    }
+
+    public void EndTurn()
+    {
+        Debug.Log("Turn done set");
+        _turnDone = true;
     }
     
 
@@ -235,7 +247,6 @@ public class God : MonoBehaviour
 
 
         _turnOrder.Enqueue(up);
-        _turnDone = true;
     }
 
 
