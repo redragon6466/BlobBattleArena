@@ -87,17 +87,23 @@ public class ArrowScript : MonoBehaviour
 
 
 
-        TargetLocX = target.gameObject.transform.position.x;
-        TargetLocY = target.gameObject.transform.position.y;
-        AttackerLocX = creator.gameObject.transform.position.x;
-        AttackerLocY = creator.gameObject.transform.position.y;
+        //TargetLocX = target.gameObject.transform.position.x;
+       // TargetLocY = target.gameObject.transform.position.y;
+        //AttackerLocX = creator.gameObject.transform.position.x;
+        //AttackerLocY = creator.gameObject.transform.position.y;
 
 
-        float opp = TargetLocY - AttackerLocY;
-        float hyp = (float)Math.Sqrt(Math.Pow(TargetLocY - AttackerLocX,(float)2) + Math.Pow(TargetLocX - AttackerLocX,(float)2));
-        float sine = opp / hyp;
-        Debug.Log(sine);
-        this.transform.Rotate(0, 0, sine * (float)(180/Math.PI), Space.World);
+        //float opp = TargetLocY - AttackerLocY;
+        //float hyp = (float)Math.Sqrt(Math.Pow(TargetLocY - AttackerLocX,(float)2) + Math.Pow(TargetLocX - AttackerLocX,(float)2));
+        // float sine = opp / hyp;
+        //Debug.Log(sine);
+
+        Vector3 targetDir = target.transform.position - creator.transform.position;
+        float angle = Vector3.Angle(targetDir, transform.up);
+
+
+        //this.transform.Rotate(0, 0, sine * (float)(180/Math.PI), Space.World);
+        this.transform.Rotate(0, 0, angle, Space.World);
 
 
 
