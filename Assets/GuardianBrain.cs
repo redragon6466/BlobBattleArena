@@ -13,9 +13,9 @@ namespace Assets
         private List<BlobScript> _allyBlobs;
         private List<BlobScript> _enemyBlobs;
 
-        public override void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
+        public override void TakeTurn(BlobScript source, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
-            _me = me;
+            _me = source;
             _allyBlobs = allyBlobs;
             _enemyBlobs = enemyBlobs;
 

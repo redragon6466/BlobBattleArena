@@ -27,7 +27,7 @@ namespace Assets
         /// <param name="otherPos"></param>
         /// <param name="moveSpeed"></param>
         /// <returns></returns>
-        public Vector3 MoveTo(Vector2 myPos, Vector2 otherPos, float moveSpeed)
+        public Vector3 MoveTo(Vector2 sourcePos, Vector2 otherPos, float moveSpeed)
         {
             if (Vector3.Distance(myPos, otherPos) > moveSpeed)
             {

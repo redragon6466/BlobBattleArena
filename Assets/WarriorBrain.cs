@@ -13,23 +13,23 @@ namespace Assets
         private List<BlobScript> _allyBlobs; 
         private List<BlobScript> _enemyBlobs;
 
-        public override void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
+        public override void TakeTurn(BlobScript source, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
-            _me = me;
+            _me = source;
             _allyBlobs = allyBlobs;
             _enemyBlobs = enemyBlobs;
 
             var a = new PunchAttack();
-            var targets = a.GetPossibleTargets(me, enemyBlobs.ToList());
+            var targets = a.GetPossibleTargets(source, enemyBlobs.ToList());
             if (targets.Count > 0)
             {
-                a.FireAttack(me, targets.First());
+                a.FireAttack(source, targets.First());
                 return;
             }
 
             var target = DetermineTarget();
             
-            me.transform.position = MoveTo(me.transform.position, target.transform.position, 5f);
+            source.transform.position = MoveTo(source.transform.position, target.transform.position, 5f);
         }
 
         public override BrainEnum GetBrainType()
