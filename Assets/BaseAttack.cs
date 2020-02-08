@@ -65,6 +65,9 @@ public class BaseAttack
     protected bool InRange(BlobScript attacker, BlobScript target)
     {
         return calcDistince(attacker, target) <= attackRange;
+
+
+
     }
     
 

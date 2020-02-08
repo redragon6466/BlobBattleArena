@@ -8,12 +8,14 @@ public class ArrowScript : MonoBehaviour
     protected BlobScript creator;
     protected BlobScript target;
     protected int speed;
-    protected int state;
-    protected int timeToLive = 60;
+    protected int state = 1;
+    protected int timeToLive = 180;
     // Start is called before the first frame update
     void Start()
     {
-        state = 1;
+        //state = 1;
+        //Debug.Log("Arrow Created");
+
     }
     /**
      * States 
@@ -26,12 +28,19 @@ public class ArrowScript : MonoBehaviour
         state = stateValue;
         return true;
     }
-
+    public void setTargetAndParent(BlobScript parent, BlobScript enemy)
+    {
+        creator = parent;
+        target = enemy;
+       
+        setState(2);
+    }
 
 
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(state);
         if(state == 1)
         {
             //do nothing
@@ -43,6 +52,7 @@ public class ArrowScript : MonoBehaviour
         else if(state == 3)
         {
             timeToLive--;
+            GetComponent<Rigidbody2D>().velocity = transform.up * 50 * Time.deltaTime;
             if(timeToLive <= 0)
             {
                 setState(4);
@@ -60,7 +70,8 @@ public class ArrowScript : MonoBehaviour
 
     private void MoveToTarget()
     {
-
+        setRotation();
+        setState(3);
     }
     public void setRotation()
     {
@@ -68,10 +79,25 @@ public class ArrowScript : MonoBehaviour
         float TargetLocY;
         float AttackerLocX;
         float AttackerLocY;
+        if(target.gameObject == null || creator.gameObject == null)
+        {
+            setState(4);
+            return;
+        }
+
+
+
+        TargetLocX = target.gameObject.transform.position.x;
+        TargetLocY = target.gameObject.transform.position.y;
+        AttackerLocX = creator.gameObject.transform.position.x;
+        AttackerLocY = creator.gameObject.transform.position.y;
+
 
         float opp = TargetLocY - AttackerLocY;
         float hyp = (float)Math.Sqrt(Math.Pow(TargetLocY - AttackerLocX,(float)2) + Math.Pow(TargetLocX - AttackerLocX,(float)2));
-
+        float sine = opp / hyp;
+        Debug.Log(sine);
+        this.transform.Rotate(0, 0, sine * (float)(180/Math.PI), Space.World);
 
 
 
