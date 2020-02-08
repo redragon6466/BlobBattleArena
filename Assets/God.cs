@@ -74,6 +74,7 @@ public class God : MonoBehaviour
 
     private void StartTwitchBot()
     {
+
         tcb = new TwitchChatBot(
         server: "irc.chat.twitch.tv",
         port: 6667,
@@ -81,7 +82,7 @@ public class God : MonoBehaviour
         channel: "kalloc656"
         );
 
-        tcb.Start();
+        //tcb.Start();
 
     }
 
