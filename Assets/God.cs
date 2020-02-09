@@ -117,11 +117,8 @@ public class God : MonoBehaviour
             }
             if (_turnDone)
             {
-                foreach (var item in _turnOrder)
-                {
-                    item.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-                }
 
+                Debug.Log("next turn");
                 NextTurn();
             }
         }
@@ -135,7 +132,7 @@ public class God : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("Turn done set");
+        Debug.Log("end turn");
         _turnDone = true;
     }
     
@@ -143,11 +140,15 @@ public class God : MonoBehaviour
 
     public void StartVsScreen()
     {
-        var temp = GameObject.FindGameObjectsWithTag("CountDown");
-        if (temp.Count() != 0)
+        Debug.Log("start vs");
+
+        var temp = GameObject.FindWithTag("CountDown");
+
+        Debug.Log(temp != null);
+        if (temp != null)
         {
             Debug.Log("found text");
-            countDown = temp.FirstOrDefault().GetComponent<Text>();
+            countDown = temp.GetComponent<Text>();
         }
             
 
@@ -187,16 +188,31 @@ public class God : MonoBehaviour
 
         SceneManager.LoadScene("Lineup");
 
+        StartCoroutine(DelayOneFrame());
 
-        StartVsScreen();
     }
     public void KillBlob(BlobScript blob)
     {
         TeamOneBlobs.Remove(blob);
         TeamTwoBlobs.Remove(blob);
 
+        var temp = _turnOrder.ToList();
+        temp.Remove(blob);
+
+        _turnOrder = new Queue<BlobScript>(temp);
+
         GameObject.Destroy(blob.gameObject);
     }
+    IEnumerator DelayOneFrame()
+    {
+
+        //returning 0 will make it wait 1 frame
+        yield return 0;
+
+        //code goes here
+        StartVsScreen();
+    }
+
 
 
     private void MoveTeams()
@@ -223,17 +239,21 @@ public class God : MonoBehaviour
 
         if (_turnOrder.Count == 0)
         {
+            Debug.Log("empty turn order");
+            _turnDone = true;
             return;
         }
 
         _turnDone = false;
         var up = _turnOrder.Dequeue();
 
+        Debug.Log("begin blob turn");
         if (TeamOneBlobs.Contains(up))
         {
             var temp = TeamOneBlobs.ToList();
             temp.Remove(up);
 
+            Debug.Log("take turn");
             up.TakeTurn(up, temp, TeamTwoBlobs); //TODO fix maybe?
         }
         else if (TeamTwoBlobs.Contains(up))
@@ -241,11 +261,13 @@ public class God : MonoBehaviour
             var temp = TeamTwoBlobs.ToList();
             temp.Remove(up);
 
+            Debug.Log("take turn");
             up.TakeTurn(up, temp, TeamOneBlobs); //TODO fix maybe?
         }
 
 
 
+        Debug.Log("return blob to queue");
         _turnOrder.Enqueue(up);
     }
 
@@ -292,7 +314,9 @@ public class God : MonoBehaviour
 
     private void StartCountdown()
     {
-        _vsTimer = VsScreenTime;
+        _vsTimer += VsScreenTime;
+
+        Debug.Log("Start: "+_vsTimer);
     }
 
     

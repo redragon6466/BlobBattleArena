@@ -7,7 +7,7 @@ public class BaseAttack
     protected List<BlobScript> possibleTargets = new List<BlobScript>();
     //attacks range
     protected const int attackRange = 3;
-    protected const int attackDamage = 50; //TODO attackes should have different damage
+    protected const int attackDamage = 100; //TODO attackes should have different damage
     //exclude self from targets?
     protected bool excludeSelf;
     protected BlobScript myBlob;

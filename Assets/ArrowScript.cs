@@ -26,6 +26,7 @@ public class ArrowScript : MonoBehaviour
      */
     public bool setState(int stateValue)
     {
+        Debug.Log("State set: " + stateValue);
         state = stateValue;
         return true;
     }
@@ -54,13 +55,12 @@ public class ArrowScript : MonoBehaviour
             case 3:
                 timeToLive--;
                 GetComponent<Rigidbody2D>().velocity = transform.up * 200 * Time.deltaTime;
-                if (timeToLive <= 0 || (Math.Abs(target.transform.position.x - gameObject.transform.position.x) < 1 && Math.Abs(target.transform.position.y - gameObject.transform.position.y) < 1))
+                if (timeToLive <= 0 || target == null || creator == null || (Math.Abs(target.transform.position.x - gameObject.transform.position.x) < 1 && Math.Abs(target.transform.position.y - gameObject.transform.position.y) < 1))
                 {
                     setState(4);
                 }
                 break;
             case 4:
-                Debug.Log("Attack Animation Done");
                 FindObjectOfType<God>().EndTurn();
                 CleanUp();
                 break;
