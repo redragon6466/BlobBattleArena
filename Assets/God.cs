@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class God : MonoBehaviour
 {
-
+    const string BlobStatsFormat = "Blob {0}\nHp: {1}\nAttack: {2}\nDefense: {3}";
 
     [SerializeField]
     private List<BlobScript> TeamOneBlobs;
@@ -118,7 +118,7 @@ public class God : MonoBehaviour
             if (_turnDone)
             {
 
-                Debug.Log("next turn");
+                //Debug.Log("next turn");
                 NextTurn();
             }
         }
@@ -132,7 +132,7 @@ public class God : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log("end turn");
+        //Debug.Log("end turn");
         _turnDone = true;
     }
     
@@ -140,14 +140,14 @@ public class God : MonoBehaviour
 
     public void StartVsScreen()
     {
-        Debug.Log("start vs");
+        //Debug.Log("start vs");
 
         var temp = GameObject.FindWithTag("CountDown");
 
-        Debug.Log(temp != null);
+        //Debug.Log(temp != null);
         if (temp != null)
         {
-            Debug.Log("found text");
+            //Debug.Log("found text");
             countDown = temp.GetComponent<Text>();
         }
             
@@ -247,13 +247,13 @@ public class God : MonoBehaviour
         _turnDone = false;
         var up = _turnOrder.Dequeue();
 
-        Debug.Log("begin blob turn");
+        //Debug.Log("begin blob turn");
         if (TeamOneBlobs.Contains(up))
         {
             var temp = TeamOneBlobs.ToList();
             temp.Remove(up);
 
-            Debug.Log("take turn");
+            //Debug.Log("take turn");
             up.TakeTurn(up, temp, TeamTwoBlobs); //TODO fix maybe?
         }
         else if (TeamTwoBlobs.Contains(up))
@@ -261,13 +261,13 @@ public class God : MonoBehaviour
             var temp = TeamTwoBlobs.ToList();
             temp.Remove(up);
 
-            Debug.Log("take turn");
+            //Debug.Log("take turn");
             up.TakeTurn(up, temp, TeamOneBlobs); //TODO fix maybe?
         }
 
 
 
-        Debug.Log("return blob to queue");
+        //Debug.Log("return blob to queue");
         _turnOrder.Enqueue(up);
     }
 
@@ -276,6 +276,11 @@ public class God : MonoBehaviour
     {
         TeamOneBlobs = new List<BlobScript>();
         TeamTwoBlobs = new List<BlobScript>();
+
+        var texts = FindObjectsOfType(typeof(Text)).ToList().OrderBy(x => ((Text)x).text);
+        var stats = texts.ToList();
+        stats.RemoveAt(0);
+
         for (int i = 0; i < 3; i++)
         {
             var blobT1 = Instantiate(blobPrefab, _blueStartPos[i], Quaternion.identity);
@@ -284,6 +289,8 @@ public class God : MonoBehaviour
             blobT1.GetComponentInChildren<Canvas>().enabled = false;
             blobT1.transform.localScale = new Vector2(_vsScale, _vsScale);
             TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
+            BlobScript blobT1Script = blobT1.GetComponent<BlobScript>();
+            ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i+1, blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense());
 
             var blobT2 = Instantiate(blobPrefab, _redStartPos[i], Quaternion.identity);
             blobT2.GetComponent<SpriteRenderer>().color = Color.red;
@@ -291,6 +298,8 @@ public class God : MonoBehaviour
             blobT2.GetComponentInChildren<Canvas>().enabled = false;
             blobT2.transform.localScale = new Vector2(_vsScale, _vsScale);
             TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
+            BlobScript blobT2Script = blobT2.GetComponent<BlobScript>();
+            ((Text)stats.ElementAt(i+3)).text = string.Format(BlobStatsFormat, i+3+1, blobT2Script.GetHealth(), blobT2Script.GetAttack(), blobT2Script.GetDefense());
 
         }
     }
@@ -316,7 +325,7 @@ public class God : MonoBehaviour
     {
         _vsTimer += VsScreenTime;
 
-        Debug.Log("Start: "+_vsTimer);
+        //Debug.Log("Start: "+_vsTimer);
     }
 
     

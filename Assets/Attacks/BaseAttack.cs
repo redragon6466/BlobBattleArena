@@ -62,6 +62,15 @@ public class BaseAttack
         return true;
     }
 
+    //Returns true if attack successfully fires. Returns false if target is illegal, or attack fails for some reason. 
+    public virtual bool FireSpell(BlobScript attacker, BlobScript target)
+    {
+        //Not done, needs a lot of work.
+        target.TakeDamage(attackDamage);
+
+        return true;
+    }
+
     protected bool InRange(BlobScript attacker, BlobScript target)
     {
         return calcDistince(attacker, target) <= attackRange;

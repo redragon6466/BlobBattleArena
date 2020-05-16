@@ -13,10 +13,13 @@ public class BlobScript : MonoBehaviour
     [SerializeField]
     private int Attack;
     [SerializeField]
+    private int SpecialAttack;
+    [SerializeField]
     private int Defense;
     [SerializeField]
     private int Initiative;
     [SerializeField]
+    private int _maxHealth;
     private int Movement;
     private IClass _class;
     private IBrain _brain;
@@ -27,6 +30,11 @@ public class BlobScript : MonoBehaviour
     public int GetAttack()
     {
         return Attack;
+    }
+
+    public int GetSpecialAttack()
+    {
+        return SpecialAttack;
     }
 
     public int GetDefense()
@@ -70,6 +78,17 @@ public class BlobScript : MonoBehaviour
         }
     }
 
+
+    public void RestoreHealth(int heal)
+    {
+        Health += heal;
+
+        if (Health > _maxHealth)
+        {
+            Health = _maxHealth;
+        }
+    }
+
     [SerializeField]
     private Tuple<int, int> position { get; set; }
 
@@ -80,6 +99,8 @@ public class BlobScript : MonoBehaviour
         _healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
         _healthBar.maxValue = Health;
         _healthBar.value = Health;
+        Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
+        barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
     }
 
     public void Awake()
@@ -101,6 +122,7 @@ public class BlobScript : MonoBehaviour
         _class = clas;
         _brain = brain;
         Health = _class.Health;
+        _maxHealth = _class.Health;
         Attack = _class.Attack;
         Defense = _class.Defense;
         Movement = _class.Movement;
@@ -118,5 +140,7 @@ public class BlobScript : MonoBehaviour
     void Update()
     {
         _healthBar.value = Health;
+        Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
+        barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
     }
 }
