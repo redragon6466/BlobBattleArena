@@ -83,7 +83,7 @@ public class God : MonoBehaviour
         channel: "kalloc656"
         );
 
-        //tcb.Start();
+        tcb.Start();
 
     }
 
