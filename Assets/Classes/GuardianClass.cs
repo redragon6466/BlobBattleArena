@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class WarriorClass : BaseClass
+    public class GuardianClass : BaseClass
     {
 
-        public WarriorClass()
+        public GuardianClass()
         {
-            Health = 300;
-            Attack = 30;
+            Health = 350;
+            Attack = 20;
             SpecialAttack = 0;
-            Defense = 10;
+            Defense = 20;
             Initiative = 10;
             Movement = 5;
 

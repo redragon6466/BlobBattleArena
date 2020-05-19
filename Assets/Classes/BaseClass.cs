@@ -13,11 +13,15 @@ namespace Assets
 
         public int Attack { get; protected set; }
 
+        public int SpecialAttack { get; protected set; }
+
         public int Defense { get; protected set; }
 
         public int Initiative { get; protected set; }
 
         public int Movement { get; protected set; }
+
+        public List<BaseAttack> AttackList { get; protected set; }
 
         public virtual void TakeTurn(GameObject[] allyBlobs, GameObject[] enemyBlobs)
         {
@@ -42,8 +46,6 @@ namespace Assets
             {
                 return otherPos;
             }
-
-
         }
 
         public Vector3 ClostedBlob(Vector3 myPos, List<Vector3> otherPositions)

@@ -9,8 +9,8 @@ namespace Assets
 {
     public class HealerBrain : BaseBrain
     {
-        private BlobScript _me; 
-        private List<BlobScript> _allyBlobs; 
+        private BlobScript _me;
+        private List<BlobScript> _allyBlobs;
         private List<BlobScript> _enemyBlobs;
 
         public override void TakeTurn(BlobScript source, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
@@ -19,13 +19,42 @@ namespace Assets
             _allyBlobs = allyBlobs;
             _enemyBlobs = enemyBlobs;
 
-            var a = new PunchAttack();
-            var h = new Heal();
-            var targets = a.GetPossibleTargets(source, enemyBlobs.ToList());
-            if (targets.Count > 0)
+            var criticalList = new List<BlobScript>();
+            var lowList = new List<BlobScript>();
+
+            //prioritize low health allies
+
+            foreach (var ally in _allyBlobs)
             {
-                a.FireAttack(source, targets.First());
-                return;
+                if (ally.GetHealth() < 50)
+                {
+                    criticalList.Add(ally);
+                }
+                else if (ally.GetHealth() < 150)
+                {
+                    lowList.Add(ally);
+                }
+            }
+
+            if (criticalList.Count > 0)
+            {
+                foreach (var criticalAlly in criticalList)
+                {
+                    if (_me.MoveSet().ElementAt(1).InRange(_me, criticalAlly))
+                    {
+                        _me.MoveSet().ElementAt(1).FireSpell(source, criticalList.First());
+                        return;
+                    }
+                }
+                var close = FindClosestAlly(criticalList);
+
+
+
+            }
+
+            if (EnemyInRange())
+            {
+
             }
 
             var target = DetermineTarget();
@@ -38,7 +67,7 @@ namespace Assets
 
         public override BrainEnum GetBrainType()
         {
-            return BrainEnum.Warrior;
+            return BrainEnum.Healer;
         }
 
         private BlobScript DetermineTarget()
@@ -46,7 +75,36 @@ namespace Assets
             return ClostedBlob(_me, _enemyBlobs.ToList());
         }
 
+        private BlobScript DetermineBlobTarget(Blobscript blob)
+        {
+            return ClostedBlob(blob, _enemyBlobs.ToList());
+        }
+
+        private bool EnemyInRange()
+        {
+            foreach (var enemy in _enemyBlobs)
+            {
+                if (enemy.IsInRange(_me))
+                {
+                    return true;
+                }
+            }
+            return false;
+
+        }
+
+        private BlobScript FindClosestAlly()
+        {
+            var list = _allyBlobs.Where(x => x.GetBrainType() != BrainEnum.Healer);
+
+            return ClostedBlob(_me, list.ToList());
+        }
 
 
+        private BlobScript FindClosestAlly(List<BlobScript> allies)
+        {
+            return ClostedBlob(_me, allies.ToList());
+        }
     }
 }
+

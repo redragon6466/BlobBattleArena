@@ -7,20 +7,20 @@ using UnityEngine;
 
 namespace Assets
 {
-    public class WarriorClass : BaseClass
+    public class HealerClass : BaseClass
     {
 
-        public WarriorClass()
+        public HealerClass()
         {
-            Health = 300;
-            Attack = 30;
-            SpecialAttack = 0;
+            Health = 200;
+            Attack = 20;
+            SpecialAttack = 30;
             Defense = 10;
             Initiative = 10;
             Movement = 5;
 
+            AttackList = new List<BaseAttack> { new PunchAttack(), new Heal() };
 
-            AttackList = new List<BaseAttack> { new PunchAttack()};
         }
 
     }

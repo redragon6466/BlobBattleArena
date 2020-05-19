@@ -19,6 +19,8 @@ namespace Assets
 
         int Movement { get;  }
 
+        List<BaseAttack> AttackList { get; }
+
         void TakeTurn(GameObject[] allyBlobs, GameObject[] enemyBlobs);
 
     }
