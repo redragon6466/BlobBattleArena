@@ -87,7 +87,7 @@ namespace Assets
             channel: "kalloc656"
             );
 
-            //tcb.Start();
+            tcb.Start();
 
         }
 
@@ -131,7 +131,7 @@ namespace Assets
 
         public void OnDestroy()
         {
-            //tcb.OnEnd();
+            tcb.OnEnd();
         }
 
         public void EndTurn()
