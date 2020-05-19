@@ -1,53 +1,27 @@
 ﻿using System;
-using System.Net.Sockets;
-using System.IO;
-using UnityEngine;
-using System.Threading;
 
 namespace Assets
 {
-    public class TwitchChatBot
+    class Program
     {
-        const string oauth = "oauth:ehxeo6hhb4ip503m1f2fvdc7fq2ghb";
+        // Bot settings
+        private static string _botName = "bot_name";
+        private static string _broadcasterName = "channel_name";
+        private static string _twitchOAuth = "oauth:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"; // get chat bot's oauth from www.twitchapps.com/tmi/
 
-        const string oauthFormat = "PASS {0}";
-        const string messageFormat = "PRIVMSG #{0} :{1}";
-
-        // server to connect to (edit at will)
-        private readonly string _server;
-        // server port (6667 by default)
-        private readonly int _port;
-        // user information defined in RFC 2812 (IRC: Client Protocol) is sent to the IRC server 
-        private readonly string _user;
-
-        // the bot's nickname
-        private readonly string _nick;
-        // channel to join
-        private readonly string _channel;
-
-        private readonly int _maxRetries;
-
-        private int countofThing = 0;
-
-        private bool stop = false;
-
-
-        public TwitchChatBot(string server, int port,  string nick, string channel, int maxRetries = 3)
+        static void Main(string[] args)
         {
-            _server = server;
-            _port = port;
-            _nick = nick;
-            _channel = channel;
-            _maxRetries = maxRetries;
-        }
-
-        public void Start()
-        {
+            // Initialize and connect to Twitch chat
             IrcClient irc = new IrcClient("irc.twitch.tv", 6667,
-                _nick, oauth, _channel);
+                _botName, _twitchOAuth, _broadcasterName);
+
+            // Ping to the server to make sure this bot stays connected to the chat
+            // Server will respond back to this bot with a PONG (without quotes):
+            // Example: ":tmi.twitch.tv PONG tmi.twitch.tv :irc.twitch.tv"
+            //PingSender ping;
             PingSender ping = new PingSender(irc);
             ping.Start();
-            Debug.LogWarning("START CHAT BOT");
+
             // Listen to the chat until program exits
             while (true)
             {
@@ -71,7 +45,7 @@ namespace Assets
                     //Console.WriteLine(message); // Print parsed irc message (debugging only)
 
                     // Broadcaster commands
-                    if (userName.Equals(_channel))
+                    if (userName.Equals(_broadcasterName))
                     {
                         if (message.Equals("!exitbot"))
                         {
@@ -85,30 +59,8 @@ namespace Assets
                     {
                         irc.SendPublicChatMessage("Hello World!");
                     }
-                    if (message.Equals("!taxes"))
-                    {
-                        irc.SendPublicChatMessage("The Mitrochrondria is the powerhouse of the cell.");
-                    }
                 }
             }
-
-        }
-
-        public void OnEnd()
-        {
-            stop = true;
-        }
-
-        public void Connect()
-        {
-// irc myClient = new irc(_server, _port, _nick, oauth, _channel);
-
-
-        }
-
-        public void Disconnect()
-        {
-
         }
     }
 }
