@@ -75,7 +75,7 @@ namespace Assets
             return ClostedBlob(_me, _enemyBlobs.ToList());
         }
 
-        private BlobScript DetermineBlobTarget(Blobscript blob)
+        private BlobScript DetermineBlobTarget(BlobScript blob)
         {
             return ClostedBlob(blob, _enemyBlobs.ToList());
         }
