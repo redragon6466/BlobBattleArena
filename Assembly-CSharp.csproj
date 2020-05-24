@@ -71,6 +71,9 @@
      <Compile Include="Assets\Classes\IClass.cs" />
      <Compile Include="Assets\Classes\WarriorClass.cs" />
      <Compile Include="Assets\God.cs" />
+     <Compile Include="Assets\IrcClient.cs" />
+     <Compile Include="Assets\PingSender.cs" />
+     <Compile Include="Assets\program.cs" />
      <Compile Include="Assets\TwitchChatBot.cs" />
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
