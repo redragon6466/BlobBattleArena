@@ -50,3 +50,4 @@ MonoBehaviour:
   TeamTwoBlobs: []
   blobPrefab: {fileID: 1831929011292466423, guid: f24492c87e2843a498f6a7108f116a8a,
     type: 3}
+  kappa: {fileID: 1831929011292466423, guid: e19cd5297b5eebe4399018aa7a0c0370, type: 3}
