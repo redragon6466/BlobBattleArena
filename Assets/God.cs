@@ -21,6 +21,8 @@ namespace Assets
         private List<BlobScript> TeamTwoBlobs;
         [SerializeField]
         GameObject blobPrefab;
+        [SerializeField]
+        GameObject kappa;
 
 
         private Text countDown;
@@ -296,7 +298,7 @@ namespace Assets
                 BlobScript blobT1Script = blobT1.GetComponent<BlobScript>();
                 ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i + 1, blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense());
 
-                var blobT2 = Instantiate(blobPrefab, _redStartPos[i], Quaternion.identity);
+                var blobT2 = Instantiate(kappa, _redStartPos[i], Quaternion.identity);
                 blobT2.GetComponent<SpriteRenderer>().color = Color.red;
                 blobT2.GetComponent<BlobScript>().SetClass(_teamTwoClasses[i], _teamTwoBrains[i], this);
                 blobT2.GetComponentInChildren<Canvas>().enabled = false;
