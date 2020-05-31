@@ -8,6 +8,7 @@ using System.Timers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Assets.Data;
 
 namespace Assets
 {
@@ -61,8 +62,9 @@ namespace Assets
         {
             StartVsScreen();
             _turnDone = true;
-
-            Task.Run(() => StartTwitchBot());
+            
+            Task.Run(() => StartDatabaseManager());
+            //Task.Run(() => StartTwitchBot());
         }
 
         public void Awake()
@@ -77,6 +79,14 @@ namespace Assets
             {
                 DontDestroyOnLoad(gameObject); //when the scene changes don't destroy the game object that owns this
             }
+        }
+
+        private void StartDatabaseManager()
+        {
+            var data = new DataService();
+            data.TestDatabase();
+            
+
         }
 
         private void StartTwitchBot()

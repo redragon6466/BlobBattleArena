@@ -72,23 +72,16 @@
      <Compile Include="Assets\Classes\HealerClass.cs" />
      <Compile Include="Assets\Classes\IClass.cs" />
      <Compile Include="Assets\Classes\WarriorClass.cs" />
+     <Compile Include="Assets\Data\DataService.cs" />
+     <Compile Include="Assets\Data\IDataService.cs" />
+     <Compile Include="Assets\Data\SubscriptionTierEnum.cs" />
+     <Compile Include="Assets\Data\Viewer.cs" />
      <Compile Include="Assets\God.cs" />
      <Compile Include="Assets\IrcClient.cs" />
      <Compile Include="Assets\PingSender.cs" />
      <Compile Include="Assets\program.cs" />
+     <Compile Include="Assets\SQLiteExample.cs" />
      <Compile Include="Assets\TwitchChatBot.cs" />
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.CollabProxy.Editor">
- <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Analytics.DataPrivacy">
- <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
- </Reference>
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
@@ -98,11 +91,17 @@
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.TextMeshPro.Editor">
+ <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.CollabProxy.Editor">
+ <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
  </Reference>
  <Reference Include="com.unity.multiplayer-weaver.Editor">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
@@ -124,6 +123,12 @@
  </Reference>
  <Reference Include="UnityEngine.SpatialTracking">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/UnityEngine.SpatialTracking.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Analytics.DataPrivacy">
+ <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/Unity.Analytics.DataPrivacy.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>D:/Projects/Blob Battle Arena/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
@@ -319,6 +324,21 @@
  </Reference>
  <Reference Include="Unity.Analytics.Tracker">
  <HintPath>D:/Projects/Blob Battle Arena/Library/PackageCache/com.unity.analytics@3.3.2/Unity.Analytics.Tracker.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Security">
+ <HintPath>D:/Projects/Blob Battle Arena/Assets/Plugins/SQLite/System.Security.dll</HintPath>
+ </Reference>
+ <Reference Include="System.EnterpriseServices">
+ <HintPath>D:/Projects/Blob Battle Arena/Assets/Plugins/SQLite/System.EnterpriseServices.dll</HintPath>
+ </Reference>
+ <Reference Include="Mono.Data.SqliteClient">
+ <HintPath>D:/Projects/Blob Battle Arena/Assets/Plugins/SQLite/Mono.Data.SqliteClient.dll</HintPath>
+ </Reference>
+ <Reference Include="Mono.Data.Sqlite">
+ <HintPath>D:/Projects/Blob Battle Arena/Assets/Plugins/SQLite/Mono.Data.Sqlite.dll</HintPath>
+ </Reference>
+ <Reference Include="System.Configuration">
+ <HintPath>D:/Projects/Blob Battle Arena/Assets/Plugins/SQLite/System.Configuration.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>C:/Program Files/Unity/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
