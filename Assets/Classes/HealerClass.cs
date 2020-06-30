@@ -23,5 +23,11 @@ namespace Assets
 
         }
 
+
+        public override string ToString()
+        {
+            return "Healer";
+        }
+
     }
 }

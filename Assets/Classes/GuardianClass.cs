@@ -12,7 +12,7 @@ namespace Assets
 
         public GuardianClass()
         {
-            Health = 350;
+            Health = 50;
             Attack = 20;
             SpecialAttack = 0;
             Defense = 20;
@@ -21,6 +21,11 @@ namespace Assets
 
 
             AttackList = new List<BaseAttack> { new PunchAttack()};
+        }
+
+        public override string ToString()
+        {
+            return "Guardian";
         }
 
     }

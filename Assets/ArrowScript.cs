@@ -28,7 +28,7 @@ namespace Assets
          */
         public bool setState(int stateValue)
         {
-            Debug.Log("State set: " + stateValue);
+            //Debug.Log("State set: " + stateValue);
             state = stateValue;
             return true;
         }

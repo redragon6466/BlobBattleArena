@@ -9,12 +9,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Assets.Data;
+using Assets.Services;
 
 namespace Assets
 {
     public class God : MonoBehaviour
     {
-        const string BlobStatsFormat = "Blob {0}\nHp: {1}\nAttack: {2}\nDefense: {3}";
+        const string BlobStatsFormat = "Blob {0}\nClass: {1}\nHp: {2}\nAttack: {3}\nDefense: {4}";
 
         [SerializeField]
         private List<BlobScript> TeamOneBlobs;
@@ -39,12 +40,14 @@ namespace Assets
         private const float _vsScale = .25f;
         private const float _battleScale = .38f;
 
-        private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new HealerBrain(), };
-        private IClass[] _teamOneClasses = { new GuardianClass(), new GuardianClass(), new HealerClass(), };
+        //private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new HealerBrain(), };
+        //private IClass[] _teamOneClasses = { new GuardianClass(), new GuardianClass(), new HealerClass(), };
+        private IBrain[] _teamOneBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
+        private IClass[] _teamOneClasses = { new WarriorClass(), new WarriorClass(), new WarriorClass(), };
         private IBrain[] _teamTwoBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
         private IClass[] _teamTwoClasses = { new WarriorClass(), new WarriorClass(), new WarriorClass(), };
-        private Vector2[] _testOnePos = { new Vector2(5, 14), new Vector2(0, 14), new Vector2(-5, 14), };
-        private Vector2[] _testTwoPos = { new Vector2(5, -14), new Vector2(0, -14), new Vector2(-5, -14), };
+        private Vector2[] _testOnePos = { new Vector2(9, 0), new Vector2(10, 0), new Vector2(11, 0), };
+        private Vector2[] _testTwoPos = { new Vector2(9, 10), new Vector2(10, 10), new Vector2(11, 10), };
 
         private Vector2[] _blueStartPos = { new Vector2(-3.67f, 2.76f), new Vector2(-3.67f, -.1f), new Vector2(-3.67f, -3.5f), };
         private Vector2[] _redStartPos = { new Vector2(3.55f, 2.91f), new Vector2(3.55f, -.1f), new Vector2(3.55f, -3.5f), };
@@ -57,13 +60,32 @@ namespace Assets
             //blob
         }
 
+        private static God instance = null;
+        private static readonly object padlock = new object();
+
+
+        public static God Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new God();
+                    }
+                    return instance;
+                }
+            }
+        }
+
         // Start is called before the first frame update
         void Start()
         {
             StartVsScreen();
             _turnDone = true;
-            
-            Task.Run(() => StartDatabaseManager());
+
+            //Task.Run(() => StartDatabaseManager());
             //Task.Run(() => StartTwitchBot());
         }
 
@@ -83,9 +105,18 @@ namespace Assets
 
         private void StartDatabaseManager()
         {
-            var data = new DataService();
-            data.TestDatabase();
-            
+           
+            if (!DataService.Instance.CheckDatabase())
+            {
+                if (!DataService.Instance.CreateDatabase())
+                {
+                    Debug.Log("Failed to create database ");
+                    return;
+                }
+            }
+
+            DataService.Instance.UpdateBalance("kalloc656", 500);
+            Debug.Log(DataService.Instance.GetBalance("kalloc656"));
 
         }
 
@@ -143,7 +174,10 @@ namespace Assets
 
         public void OnDestroy()
         {
-            tcb.OnEnd();
+            if (tcb != null)
+            {
+                tcb.OnEnd();
+            }
         }
 
         public void EndTurn()
@@ -171,7 +205,7 @@ namespace Assets
 
             CreateLineup();
             StartCountdown();
-
+            BettingService.Instance.StartNewRound();
             _battleing = false;
         }
 
@@ -179,28 +213,44 @@ namespace Assets
         {
             SceneManager.LoadScene("Arena");
 
+            Task task = new Task (() => UpdateBalancesOnRoundStart());
+            task.Start();
             BuildTurnOrder();
             MoveTeams();
             _battleing = true;
+
+            
         }
 
         public void EndBattle()
         {
             _battleing = false;
 
+            
+
             _turnOrder.Clear();
             var temp = TeamOneBlobs.ToList();
-
+            int team = 0;
             foreach (var blob in temp)
             {
+                if (blob.GetHealth() > 0)
+                {
+                    team = 1;
+                }
                 KillBlob(blob);
             }
             temp = TeamTwoBlobs.ToList();
             foreach (var blob in temp)
             {
+                if (blob.GetHealth() > 0)
+                {
+                    team = 2;
+                }
                 KillBlob(blob);
             }
 
+            Task task = new Task(() => UpdateBalancesOnRoundEnd(team));
+            task.Start();
 
             SceneManager.LoadScene("Lineup");
 
@@ -235,12 +285,14 @@ namespace Assets
         {
             for (int i = 0; i < 3; i++)
             {
-                TeamOneBlobs[i].transform.position = _testOnePos[i];
+                TeamOneBlobs[i].transform.position = GridService.Instance.ConvertToPoint((int)_testOnePos[i].x, (int)_testOnePos[i].y);
                 TeamOneBlobs[i].transform.localScale = new Vector2(_battleScale, _battleScale);
                 TeamOneBlobs[i].GetComponentInChildren<Canvas>().enabled = true;
-                TeamTwoBlobs[i].transform.position = _testTwoPos[i];
+                TeamOneBlobs[i].SetGridLocation((int)_testOnePos[i].x, (int)_testOnePos[i].y);
+                TeamTwoBlobs[i].transform.position = GridService.Instance.ConvertToPoint((int)_testTwoPos[i].x, (int)_testTwoPos[i].y);
                 TeamTwoBlobs[i].transform.localScale = new Vector2(_battleScale, _battleScale);
                 TeamTwoBlobs[i].GetComponentInChildren<Canvas>().enabled = true;
+                TeamTwoBlobs[i].SetGridLocation((int)_testTwoPos[i].x, (int)_testTwoPos[i].y);
             }
         }
 
@@ -253,7 +305,7 @@ namespace Assets
                 EndBattle();
             }
 
-            if (_turnOrder.Count == 0)
+            if (_turnOrder != null && _turnOrder.Count == 0)
             {
                 Debug.Log("empty turn order");
                 _turnDone = true;
@@ -306,7 +358,7 @@ namespace Assets
                 blobT1.transform.localScale = new Vector2(_vsScale, _vsScale);
                 TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
                 BlobScript blobT1Script = blobT1.GetComponent<BlobScript>();
-                ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i + 1, blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense());
+                ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i + 1, blobT1Script.GetClass().ToString(), blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense());
 
                 var blobT2 = Instantiate(kappa, _redStartPos[i], Quaternion.identity);
                 blobT2.GetComponent<SpriteRenderer>().color = Color.red;
@@ -315,7 +367,7 @@ namespace Assets
                 blobT2.transform.localScale = new Vector2(_vsScale, _vsScale);
                 TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
                 BlobScript blobT2Script = blobT2.GetComponent<BlobScript>();
-                ((Text)stats.ElementAt(i + 3)).text = string.Format(BlobStatsFormat, i + 3 + 1, blobT2Script.GetHealth(), blobT2Script.GetAttack(), blobT2Script.GetDefense());
+                ((Text)stats.ElementAt(i + 3)).text = string.Format(BlobStatsFormat, i + 3 + 1, blobT2Script.GetClass().ToString(), blobT2Script.GetHealth(), blobT2Script.GetAttack(), blobT2Script.GetDefense());
 
             }
         }
@@ -332,7 +384,7 @@ namespace Assets
                 turnList.Add(obj);
             }
             List<BlobScript> sorted = turnList.OrderByDescending(x => x.GetInitiative()).ToList();
-
+            Debug.Log("Create Turn Order");
             _turnOrder = new Queue<BlobScript>(sorted);
         }
 
@@ -342,6 +394,31 @@ namespace Assets
             _vsTimer += VsScreenTime;
 
             //Debug.Log("Start: "+_vsTimer);
+        }
+
+        private void UpdateBalancesOnRoundStart()
+        {
+            var bets = BettingService.Instance.GetTeamOneBets();
+            bets.AddRange(BettingService.Instance.GetTeamTwoBets());
+            foreach (var item in bets)
+            {
+                Debug.Log(DataService.Instance.GetBalance(item.ViewerName));
+                Debug.Log("-- RF TEMP -- Balance subtracted for bet: " + item.ViewerName + "," + item.Amount);
+                DataService.Instance.UpdateBalance(item.ViewerName, item.Amount * -1);
+                Debug.Log(DataService.Instance.GetBalance(item.ViewerName));
+            }
+        }
+
+        private void UpdateBalancesOnRoundEnd(int team)
+        {
+            Debug.Log(team);
+
+            var winners = BettingService.Instance.PayoutBets(team);
+            
+            foreach (var item in winners)
+            {
+                DataService.Instance.UpdateBalance(item.Item1, item.Item2);
+            }
         }
     }
 }

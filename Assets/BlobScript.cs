@@ -28,10 +28,18 @@ namespace Assets
         private God _god;
         private Slider _healthBar;
         private bool _isStealth;
+        private int _blobGridX;
+        private int _blobGridY;
 
         public int GetAttack()
         {
             return Attack;
+        }
+
+
+        public IClass GetClass()
+        {
+            return _class;
         }
 
         public int GetSpecialAttack()
@@ -80,6 +88,16 @@ namespace Assets
                 }
             }
             return false;
+        }
+
+        public void SetGridLocation(int x, int y)
+        {
+            _blobGridX = x;
+            _blobGridY = y;
+        }
+        public Vector2 GetGridLocation()
+        {
+            return new Vector2(_blobGridX, _blobGridY);
         }
 
         public List<BaseAttack> MoveSet()

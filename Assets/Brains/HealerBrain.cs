@@ -35,7 +35,7 @@ namespace Assets
                     lowList.Add(ally);
                 }
             }
-
+            Debug.Log(criticalList.Count);
             if (criticalList.Count > 0)
             {
                 foreach (var criticalAlly in criticalList)

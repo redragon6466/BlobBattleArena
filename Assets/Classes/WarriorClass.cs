@@ -23,5 +23,11 @@ namespace Assets
             AttackList = new List<BaseAttack> { new PunchAttack()};
         }
 
+
+        public override string ToString()
+        {
+            return "Warrior";
+        }
+
     }
 }

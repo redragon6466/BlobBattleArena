@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Assets
 {
     public class BaseBrain : IBrain
     {
-
+        private const int _blobDistance = 4; // The distance where two blobs are next to each other
         public virtual void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
             
@@ -29,22 +30,39 @@ namespace Assets
         /// <returns></returns>
         public Vector3 MoveTo(Vector2 sourcePos, Vector2 targetPos, float moveSpeed)
         {
-            if (Vector3.Distance(sourcePos, targetPos) > moveSpeed)
+            //if (GridService.Instance.GetDistance(sourcePos, targetPos) < _blobDistance)
+            //{
+               // return new Vector3(sourcePos.x, sourcePos.y);
+            //}
+            
+            if (GridService.Instance.GetDistance(sourcePos, targetPos) > moveSpeed)
             {
-                var temp1 = Vector3.Distance(sourcePos, targetPos);
                 var xdif = targetPos.x - sourcePos.x;
                 var ydif = targetPos.y - sourcePos.y;
 
-                return new Vector2(sourcePos.x + moveSpeed / temp1 * xdif, sourcePos.y + moveSpeed / temp1 * ydif);
+                var total = xdif + ydif;
+                var perX = xdif / total;
+                var perY = ydif / total;
+                var newX = (int)perX * moveSpeed;
+                var newY = (int)perY * moveSpeed;
+                if (newX + newY == moveSpeed)
+                {
+                    return new Vector2(sourcePos.x + newX, sourcePos.y + newY);
+                }
+                if (newX + newY == moveSpeed -1)
+                {
+                    return new Vector2(sourcePos.x + newX, sourcePos.y + newY - 1);
+                }
+                if (newX + newY == moveSpeed +1)
+                {
+                    return new Vector2(sourcePos.x + newX, sourcePos.y + newY + 1);
+                }
+                return new Vector2(sourcePos.x + newX, sourcePos.y + newY);
             }
             else
             {
-                var temp1 = Vector3.Distance(sourcePos, targetPos);
-                var xdif = sourcePos.x - targetPos.x;
-                var ydif = sourcePos.y - targetPos.y;
-
-
-                return new Vector2(targetPos.x + 1 / temp1 * xdif, targetPos.y + 1 / temp1 * ydif);
+                //If where you want to go is within your movespeed feel free man
+                return targetPos;
             }
 
 

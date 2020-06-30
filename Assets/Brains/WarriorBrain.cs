@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,9 +28,27 @@ namespace Assets
                 return;
             }
 
+            var close = 1000;
+            var x = 0;
+            var y = 0;
             var target = DetermineTarget();
+            var loc = target.GetGridLocation();
+            var myLoc = _me.GetGridLocation();
+            for (int i = -1; i < 2; i++)
+            {
+                for (int j = -1; j < 2; j++)
+                {
 
-            source.transform.position = MoveTo(source.transform.position, target.transform.position, 5f);
+                    var dis = GridService.Instance.GetDistance(myLoc, new Vector2(loc.x + i, loc.y + j));    
+                    if (dis < close && dis != 0)
+                    {
+                         close = dis;
+                         x = (int)loc.x + i;
+                         y = (int)loc.y + j;
+                    }  
+                }
+            }
+            source.transform.position = GridService.Instance.ConvertToPoint(MoveTo(myLoc, new Vector2(x, y), 5f));
             //source.GetComponent<Rigidbody2D>().MovePosition(MoveTo(source.transform.position, target.transform.position, 5f));
 
             UnityEngine.Object.FindObjectOfType<God>().EndTurn();

@@ -3,6 +3,8 @@ using System.Net.Sockets;
 using System.IO;
 using UnityEngine;
 using System.Threading;
+using Assets.Data;
+using Assets.Services;
 
 namespace Assets
 {
@@ -88,6 +90,31 @@ namespace Assets
                     if (message.Equals("!taxes"))
                     {
                         irc.SendPublicChatMessage("The Mitrochrondria is the powerhouse of the cell.");
+                    }
+                    if (message.Equals("!balance"))
+                    {
+                        var bal = DataService.Instance.GetBalance(userName); 
+                        irc.SendPublicChatMessage(string.Format("{0}'s Balance is {1}. ", userName, bal));
+                    }
+                    if (message.StartsWith("!bet"))
+                    {
+                        var msg = message.Split(' ');
+                        if (!int.TryParse(msg[1], out int team))
+                        {
+                            irc.SendPublicChatMessage(string.Format("Could not parse  team of {0}", message));
+                            continue;
+                        }
+                        if (!int.TryParse(msg[2], out int amount))
+                        {
+                            irc.SendPublicChatMessage(string.Format("Could not parse  amount of {0}", message));
+                            continue;
+                        }
+                        var bal = DataService.Instance.GetBalance(userName);
+                        if (bal < amount)
+                        {
+                            irc.SendPublicChatMessage(string.Format("Sorry {0} you don't have enough money, your balance is {1}. ", userName, bal));
+                        }
+                        BettingService.Instance.AddBetToTeam(userName, amount, team);
                     }
                 }
             }
