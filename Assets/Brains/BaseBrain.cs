@@ -38,22 +38,22 @@ namespace Assets
             if (GridService.Instance.GetDistance(sourcePos, targetPos) > moveSpeed)
             {
                 var xdif = targetPos.x - sourcePos.x;
-                var ydif = targetPos.y - sourcePos.y;
+                var ydif =targetPos.y - sourcePos.y;
 
-                var total = xdif + ydif;
+                var total = Math.Abs(xdif) + Math.Abs(ydif);
                 var perX = xdif / total;
                 var perY = ydif / total;
-                var newX = (int)perX * moveSpeed;
-                var newY = (int)perY * moveSpeed;
-                if (newX + newY == moveSpeed)
+                var newX = (int)(perX * moveSpeed);
+                var newY = (int)(perY * moveSpeed);
+                if (Math.Abs(newX + newY) == moveSpeed)
                 {
                     return new Vector2(sourcePos.x + newX, sourcePos.y + newY);
                 }
-                if (newX + newY == moveSpeed -1)
+                if (Math.Abs(newX + newY) == moveSpeed -1)
                 {
                     return new Vector2(sourcePos.x + newX, sourcePos.y + newY - 1);
                 }
-                if (newX + newY == moveSpeed +1)
+                if (Math.Abs(newX + newY) == moveSpeed +1)
                 {
                     return new Vector2(sourcePos.x + newX, sourcePos.y + newY + 1);
                 }

@@ -15,7 +15,7 @@ namespace Assets
 {
     public class God : MonoBehaviour
     {
-        const string BlobStatsFormat = "Blob {0}\nClass: {1}\nHp: {2}\nAttack: {3}\nDefense: {4}";
+        const string BlobStatsFormat = "Blob {0}\nClass: {1}\nHp: {2}\nAttack: {3}\nDefense: {4}\nIniative: {5}(+{6})";
 
         [SerializeField]
         private List<BlobScript> TeamOneBlobs;
@@ -42,22 +42,25 @@ namespace Assets
 
         //private IBrain[] _teamOneBrains = { new GuardianBrain(), new GuardianBrain(), new HealerBrain(), };
         //private IClass[] _teamOneClasses = { new GuardianClass(), new GuardianClass(), new HealerClass(), };
-        private IBrain[] _teamOneBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
-        private IClass[] _teamOneClasses = { new WarriorClass(), new WarriorClass(), new WarriorClass(), };
-        private IBrain[] _teamTwoBrains = { new WarriorBrain(), new WarriorBrain(), new WarriorBrain(), };
-        private IClass[] _teamTwoClasses = { new WarriorClass(), new WarriorClass(), new WarriorClass(), };
-        private Vector2[] _testOnePos = { new Vector2(9, 0), new Vector2(10, 0), new Vector2(11, 0), };
-        private Vector2[] _testTwoPos = { new Vector2(9, 10), new Vector2(10, 10), new Vector2(11, 10), };
+        private IBrain[] _teamOneBrains = { new WarriorBrain() , new WarriorBrain(), new WarriorBrain(), };
+        private IClass[] _teamOneClasses = { new WarriorClass() , new WarriorClass(), new WarriorClass(), };
+        private IBrain[] _teamTwoBrains = { new WarriorBrain() , new WarriorBrain(), new WarriorBrain(), };
+        private IClass[] _teamTwoClasses = { new WarriorClass() , new WarriorClass(), new WarriorClass(15), };
 
+        //ARENA POSITIONS
+        private Vector2[] _testOnePos = { new Vector2(9, 0) , new Vector2(10, 0), new Vector2(11, 0), };
+        private Vector2[] _testTwoPos = { new Vector2(3, 10), new Vector2(10, 10), new Vector2(17, 10), };
+
+        //LINEUP POSITIONS
         private Vector2[] _blueStartPos = { new Vector2(-3.67f, 2.76f), new Vector2(-3.67f, -.1f), new Vector2(-3.67f, -3.5f), };
-        private Vector2[] _redStartPos = { new Vector2(3.55f, 2.91f), new Vector2(3.55f, -.1f), new Vector2(3.55f, -3.5f), };
+        private Vector2[] _redStartPos = { new Vector2(3.55f, 2.91f) , new Vector2(3.55f, -.1f), new Vector2(3.55f, -3.5f), };
 
         private TwitchChatBot tcb;
 
 
         public God()
         {
-            //blob
+            //instance = this;
         }
 
         private static God instance = null;
@@ -82,11 +85,12 @@ namespace Assets
         // Start is called before the first frame update
         void Start()
         {
+            instance = this;
             StartVsScreen();
             _turnDone = true;
 
             //Task.Run(() => StartDatabaseManager());
-            //Task.Run(() => StartTwitchBot());
+            Task.Run(() => StartTwitchBot());
         }
 
         public void Awake()
@@ -115,7 +119,7 @@ namespace Assets
                 }
             }
 
-            DataService.Instance.UpdateBalance("kalloc656", 500);
+            //DataService.Instance.UpdateBalance("kalloc656", 500);
             Debug.Log(DataService.Instance.GetBalance("kalloc656"));
 
         }
@@ -257,6 +261,18 @@ namespace Assets
             StartCoroutine(DelayOneFrame());
 
         }
+
+        /// <summary>
+        /// Gets a list of all the blobs
+        /// </summary>
+        /// <returns>a list of all blobs</returns>
+        public List<BlobScript> GetAllBlobs()
+        {
+            var blobs = new List<BlobScript>(TeamOneBlobs);
+            blobs.AddRange(TeamTwoBlobs);
+            return blobs;
+        }
+
         public void KillBlob(BlobScript blob)
         {
             TeamOneBlobs.Remove(blob);
@@ -358,7 +374,7 @@ namespace Assets
                 blobT1.transform.localScale = new Vector2(_vsScale, _vsScale);
                 TeamOneBlobs.Add(blobT1.GetComponent<BlobScript>());
                 BlobScript blobT1Script = blobT1.GetComponent<BlobScript>();
-                ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i + 1, blobT1Script.GetClass().ToString(), blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense());
+                ((Text)stats.ElementAt(i)).text = string.Format(BlobStatsFormat, i + 1, blobT1Script.GetClass().ToString(), blobT1Script.GetHealth(), blobT1Script.GetAttack(), blobT1Script.GetDefense(), blobT1Script.GetInitiative(), blobT1Script.GetInitiativBonus());
 
                 var blobT2 = Instantiate(kappa, _redStartPos[i], Quaternion.identity);
                 blobT2.GetComponent<SpriteRenderer>().color = Color.red;
@@ -367,7 +383,7 @@ namespace Assets
                 blobT2.transform.localScale = new Vector2(_vsScale, _vsScale);
                 TeamTwoBlobs.Add(blobT2.GetComponent<BlobScript>());
                 BlobScript blobT2Script = blobT2.GetComponent<BlobScript>();
-                ((Text)stats.ElementAt(i + 3)).text = string.Format(BlobStatsFormat, i + 3 + 1, blobT2Script.GetClass().ToString(), blobT2Script.GetHealth(), blobT2Script.GetAttack(), blobT2Script.GetDefense());
+                ((Text)stats.ElementAt(i + 3)).text = string.Format(BlobStatsFormat, i + 3 + 1, blobT2Script.GetClass().ToString(), blobT2Script.GetHealth(), blobT2Script.GetAttack(), blobT2Script.GetDefense(), blobT2Script.GetInitiative(), blobT2Script.GetInitiativBonus());
 
             }
         }

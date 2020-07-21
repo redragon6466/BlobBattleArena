@@ -12,3 +12,4 @@
 /.vs/BlobBattleArena/v16/Server/sqlite3/storage.ide
 /.vs/BlobBattleArena/v16/Server/sqlite3/storage.ide-shm
 /.vs/BlobBattleArena/v16/Server/sqlite3/storage.ide-wal
+/build/

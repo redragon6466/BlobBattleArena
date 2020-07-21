@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Assets.Services;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +10,7 @@ namespace Assets
     {
         protected List<BlobScript> possibleTargets = new List<BlobScript>();
         //attacks range
-        protected int attackRange = 3;
+        protected int attackRange = 1;
         protected const int attackDamage = 100; //TODO attackes should have different damage
                                                 //exclude self from targets?
         protected bool excludeSelf;
@@ -70,9 +72,41 @@ namespace Assets
 
         public bool InRange(BlobScript attacker, BlobScript target)
         {
-            return calcDistince(attacker, target) <= attackRange;
+            var attackerLoc = attacker.GetGridLocation();
+            var targetLoc = target.GetGridLocation();
+            var xdis = Math.Abs(targetLoc.x - attackerLoc.x);
+            var ydis = Math.Abs(targetLoc.y - attackerLoc.y);
 
+            if (xdis > ydis)
+            {
+                return xdis <= attackRange;
+            }
 
+            if (ydis > xdis)
+            {
+                return ydis <= attackRange;
+            }
+
+            return ydis <= attackRange;
+
+        }
+
+        public bool InRangeC(BlobScript attacker, BlobScript target)
+        {
+            var attackerLoc = attacker.GetGridLocation();
+            var targetLoc = target.GetGridLocation();
+            var xdis = Math.Pow(targetLoc.x - attackerLoc.x, 2);
+            var ydis = Math.Pow(targetLoc.y - attackerLoc.y, 2);
+
+            var c = (int)Math.Sqrt(xdis + ydis);
+
+            //for close distances calculating the hypotenuse is a resonable approximation of diagonals counting as 1 square
+            if (attackRange <= 2 && c <= attackRange)
+            {
+                return true;
+            }
+
+            return GridService.Instance.GetDistance(attackerLoc, targetLoc) <= attackRange;
 
         }
 

@@ -24,6 +24,20 @@ namespace Assets
         }
 
 
+        public WarriorClass(int init)
+        {
+            Health = 300;
+            Attack = 30;
+            SpecialAttack = 0;
+            Defense = 10;
+            Initiative = init;
+            Movement = 5;
+
+
+            AttackList = new List<BaseAttack> { new PunchAttack() };
+        }
+
+
         public override string ToString()
         {
             return "Warrior";

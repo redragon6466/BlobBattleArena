@@ -15,5 +15,9 @@ namespace Assets.Services.Interfaces
         Vector2 PointToGrid(Vector2 point);
 
         int GetDistance(Vector2 start, Vector2 end);
+        Vector2 ConvertToPointVec(Vector2 vec);
+        Vector2 PointToGridVec(Vector2 vec);
+        bool SpaceOccupiedVec(Vector2 vec);
+        bool SpaceOccupied(int x, int y);
     }
 }

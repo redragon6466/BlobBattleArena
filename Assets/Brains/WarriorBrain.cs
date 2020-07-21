@@ -38,7 +38,10 @@ namespace Assets
             {
                 for (int j = -1; j < 2; j++)
                 {
-
+                    if (GridService.Instance.SpaceOccupied((int)loc.x + i, (int)loc.y + j) || !GridService.Instance.IsInGrid((int)loc.x + i, (int)loc.y + j))
+                    {
+                        continue;
+                    }
                     var dis = GridService.Instance.GetDistance(myLoc, new Vector2(loc.x + i, loc.y + j));    
                     if (dis < close && dis != 0)
                     {
@@ -48,7 +51,9 @@ namespace Assets
                     }  
                 }
             }
-            source.transform.position = GridService.Instance.ConvertToPoint(MoveTo(myLoc, new Vector2(x, y), 5f));
+            var newGridLoc = MoveTo(myLoc, new Vector2(x, y), 5f);
+            source.SetGridLocation((int)newGridLoc.x, (int)newGridLoc.y);
+            source.transform.position = GridService.Instance.ConvertToPoint(newGridLoc);
             //source.GetComponent<Rigidbody2D>().MovePosition(MoveTo(source.transform.position, target.transform.position, 5f));
 
             UnityEngine.Object.FindObjectOfType<God>().EndTurn();

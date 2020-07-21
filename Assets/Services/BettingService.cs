@@ -110,10 +110,7 @@ namespace Assets.Services
             Debug.Log(bets.Count);
             foreach (var bet in bets)
             {
-                Debug.Log(bet.Amount);
-                Debug.Log(pool);
-                Debug.Log(pot);
-                var payout = bet.Amount / pool * pot;
+                var payout = (int)((float)bet.Amount / pool * pot);
                 Debug.Log(payout);
                 winning.Add(new Tuple<string, int>(bet.ViewerName, payout));
             }

@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -600, y: -296}
-  m_SizeDelta: {x: 210.96, y: 120.95}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &372773993
 MonoBehaviour:
@@ -240,7 +240,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 600, y: -296}
-  m_SizeDelta: {x: 181.15, y: 125.4}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &430563833
 MonoBehaviour:
@@ -503,8 +503,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -600, y: -16}
-  m_SizeDelta: {x: 210.95, y: 120}
+  m_AnchoredPosition: {x: -600, y: -37.857}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1204204040
 MonoBehaviour:
@@ -581,7 +581,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 600, y: -17}
-  m_SizeDelta: {x: 186.1, y: 127.6}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486681160
 MonoBehaviour:
@@ -906,7 +906,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 600, y: 261}
-  m_SizeDelta: {x: 186.15, y: 120}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1961278742
 MonoBehaviour:
@@ -991,8 +991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -600, y: 251.95}
-  m_SizeDelta: {x: 210.9, y: 127.7}
+  m_AnchoredPosition: {x: -600, y: 220.9}
+  m_SizeDelta: {x: 313.5, y: 189.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2005534134
 MonoBehaviour:
@@ -1027,13 +1027,15 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Blob 1
 
-    Hp:
+    Class: warrior
 
-    Attack:
+    Hp: 10
 
-    Defense:
+    Attack: 10
 
-'
+    Defense: 10
+
+    Iniative: 14(+5)'
 --- !u!222 &2005534135
 CanvasRenderer:
   m_ObjectHideFlags: 0

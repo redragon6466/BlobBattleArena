@@ -20,6 +20,7 @@ namespace Assets
         private int Defense;
         [SerializeField]
         private int Initiative;
+        private int InitiativeBonus;
         [SerializeField]
         private int _maxHealth;
         private int Movement;
@@ -28,7 +29,9 @@ namespace Assets
         private God _god;
         private Slider _healthBar;
         private bool _isStealth;
+        [SerializeField]
         private int _blobGridX;
+        [SerializeField]
         private int _blobGridY;
 
         public int GetAttack()
@@ -66,6 +69,10 @@ namespace Assets
         public int GetInitiative()
         {
             return Initiative;
+        }
+        public int GetInitiativBonus()
+        {
+            return InitiativeBonus;
         }
 
         public BrainEnum GetBrainType()
@@ -126,8 +133,6 @@ namespace Assets
             }
         }
 
-        [SerializeField]
-        private Tuple<int, int> position { get; set; }
 
 
         // Start is called before the first frame update
@@ -163,7 +168,9 @@ namespace Assets
             Attack = _class.Attack;
             Defense = _class.Defense;
             Movement = _class.Movement;
-            Initiative = Random.Range(0, 20);
+            //Initiative = _class.Initiative;
+            Initiative = Random.Range(0, 20) + _class.Initiative;
+            InitiativeBonus = _class.Initiative;
             _god = god;
         }
 
