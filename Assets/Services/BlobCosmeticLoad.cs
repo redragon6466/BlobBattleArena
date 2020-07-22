@@ -52,7 +52,9 @@ namespace Assets.Services
          */
         private void loadSprites()
         {
-            sprites = Resources.FindObjectsOfTypeAll<Sprite>();
+            //sprites = Resources.FindObjectsOfTypeAll<Sprite>();
+            //sprites = Resources.LoadAll<Sprite>("resources/BlobSprites");
+            sprites = Resources.LoadAll<Sprite>("BlobSprites");
             Debug.Log("A total of "+ sprites.Length + " sprites found and loaded.");
             
         }

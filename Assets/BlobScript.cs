@@ -136,9 +136,11 @@ namespace Assets
             SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
             //BlobCosmeticLoad.Instance.
             string[] loadedImages = BlobCosmeticLoad.Instance.GiveImageNames();
-            //string randomImage = loadedImages[loadedImages.Length - 1];
-            string randomImage = loadedImages[0];
+            string randomImage = loadedImages[loadedImages.Length - Random.Range(1,loadedImages.Length)];
+            //string randomImage = loadedImages[0];
             BlobCosmeticLoad.Instance.SetSpriteOnRenderer(randomImage, mrBlob);
+
+
             foreach (string x in loadedImages)
             {
                 Debug.Log("Sprite Name = " + x);
