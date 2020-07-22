@@ -118,17 +118,17 @@ namespace Assets
         //Change the Sprite Value
         //Reload
         
-        public bool setSprite(string SpriteName)
-        {
-            
-            SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
-            //Call the BlobCosmeticLoad
-            Sprite sprites = Resources.Load<Sprite>("sprites/Kappa");            
-            //Debug.Log("Length is" + sprites.Length);
-            mrBlob.sprite = sprites;
-            Debug.Log("Sprite Name = " + sprites.name );
 
-            return false;
+        public void setSprite()
+        {
+            setRandomSprite();
+        }
+
+
+        public void setSprite(string SpriteName)
+        {
+            SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
+            BlobCosmeticLoad.Instance.SetSpriteOnRenderer(SpriteName, mrBlob);            
         }
 
         public void setRandomSprite()
