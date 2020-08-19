@@ -56,7 +56,7 @@ namespace Assets
             source.transform.position = GridService.Instance.ConvertToPoint(newGridLoc);
             //source.GetComponent<Rigidbody2D>().MovePosition(MoveTo(source.transform.position, target.transform.position, 5f));
 
-            UnityEngine.Object.FindObjectOfType<God>().EndTurn();
+           God.Instance.EndTurn();
         }
 
         public override BrainEnum GetBrainType()

@@ -59,6 +59,7 @@
      <Compile Include="Assets\Attacks\BaseAttack.cs" />
      <Compile Include="Assets\Attacks\Heal.cs" />
      <Compile Include="Assets\Attacks\PunchAttack.cs" />
+     <Compile Include="Assets\BlobCosmeticLoad.cs" />
      <Compile Include="Assets\BlobScript.cs" />
      <Compile Include="Assets\Brains\BaseBrain.cs" />
      <Compile Include="Assets\Brains\BrainEnum.cs" />
