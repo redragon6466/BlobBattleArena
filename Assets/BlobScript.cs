@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using Assets.Services;
 
 namespace Assets
 {
@@ -117,17 +118,35 @@ namespace Assets
         //Change the Sprite Value
         //Reload
         
-        public bool setSprite(string SpriteName)
-        {
-            
-            SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
-            //Call the BlobCosmeticLoad
-            Sprite sprites = Resources.Load<Sprite>("sprites/Kappa");            
-            //Debug.Log("Length is" + sprites.Length);
-            mrBlob.sprite = sprites;
-            Debug.Log("Sprite Name = " + sprites.name );
 
-            return false;
+        public void setSprite()
+        {
+            setRandomSprite();
+        }
+
+
+        public void setSprite(string SpriteName)
+        {
+            SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
+            BlobCosmeticLoad.Instance.SetSpriteOnRenderer(SpriteName, mrBlob);            
+        }
+
+        public void setRandomSprite()
+        {
+            SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
+            //BlobCosmeticLoad.Instance.
+            string[] loadedImages = BlobCosmeticLoad.Instance.GiveImageNames();
+            string randomImage = loadedImages[loadedImages.Length - Random.Range(1,loadedImages.Length)];
+            //string randomImage = loadedImages[0];
+            BlobCosmeticLoad.Instance.SetSpriteOnRenderer(randomImage, mrBlob);
+
+
+            foreach (string x in loadedImages)
+            {
+                Debug.Log("Sprite Name = " + x);
+            }
+            Debug.Log("Sprite Name = " + randomImage);
+            
         }
 
 
@@ -163,7 +182,7 @@ namespace Assets
             _healthBar.value = Health;
             Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
             barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
-            setSprite("Kappa");
+            setRandomSprite();
             //Debug.Log("");
         }
 

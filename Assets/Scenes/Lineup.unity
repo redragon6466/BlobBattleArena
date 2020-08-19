@@ -362,6 +362,12 @@ PrefabInstance:
       propertyPath: countDown
       value: 
       objectReference: {fileID: 1816553978}
+    - target: {fileID: 5722536762546202282, guid: c105d9a27d9f2674b9524f180f5ea9c8,
+        type: 3}
+      propertyPath: kappa
+      value: 
+      objectReference: {fileID: 1831929011292466423, guid: f24492c87e2843a498f6a7108f116a8a,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c105d9a27d9f2674b9524f180f5ea9c8, type: 3}
 --- !u!1 &712253233
