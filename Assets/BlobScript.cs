@@ -34,6 +34,8 @@ namespace Assets
         private int _blobGridX;
         [SerializeField]
         private int _blobGridY;
+        [SerializeField]
+        private bool debugMode;
 
         public int GetAttack()
         {
@@ -135,17 +137,17 @@ namespace Assets
         {
             SpriteRenderer mrBlob = this.GetComponent<SpriteRenderer>();
             //BlobCosmeticLoad.Instance.
-            string[] loadedImages = BlobCosmeticLoad.Instance.GiveImageNames();
-            string randomImage = loadedImages[loadedImages.Length - Random.Range(1,loadedImages.Length)];
+            //string[] loadedImages = BlobCosmeticLoad.Instance.GiveImageNames();
+            //string randomImage = loadedImages[loadedImages.Length - Random.Range(1,loadedImages.Length)];
             //string randomImage = loadedImages[0];
-            BlobCosmeticLoad.Instance.SetSpriteOnRenderer(randomImage, mrBlob);
+            BlobCosmeticLoad.Instance.SetSpriteOnRenderer("Fritz", mrBlob);
 
 
-            foreach (string x in loadedImages)
-            {
-                Debug.Log("Sprite Name = " + x);
-            }
-            Debug.Log("Sprite Name = " + randomImage);
+            //foreach (string x in loadedImages)
+            //{
+            //    Debug.Log("Sprite Name = " + x);
+            //}
+            //Debug.Log("Sprite Name = " + randomImage);
             
         }
 
@@ -177,7 +179,17 @@ namespace Assets
         // Start is called before the first frame update
         void Start()
         {
-            _healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
+            //_healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
+            //_healthBar = GetComponentsInChildren<Canvas>();
+            foreach(Canvas myCanvas in GetComponentsInChildren<Canvas>())
+            {
+                if(myCanvas.name == "HealthDisplay")
+                {
+                    _healthBar = myCanvas.GetComponentInChildren<Slider>();
+                }
+            }
+
+
             _healthBar.maxValue = Health;
             _healthBar.value = Health;
             Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
@@ -188,16 +200,21 @@ namespace Assets
 
         public void Awake()
         {
-            int gameStatusCount = FindObjectsOfType<BlobScript>().Length;
-            if (gameStatusCount > 6)
+            if(!debugMode)
             {
-                gameObject.SetActive(false);
-                Destroy(gameObject);
+                int gameStatusCount = FindObjectsOfType<BlobScript>().Length;
+                if (gameStatusCount > 6)
+                {
+                    gameObject.SetActive(false);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    DontDestroyOnLoad(gameObject); //when the scene changes don't destroy the game object that owns this
+                }
             }
-            else
-            {
-                DontDestroyOnLoad(gameObject); //when the scene changes don't destroy the game object that owns this
-            }
+
+            
         }
 
         public void SetClass(IClass clas, IBrain brain, God god)
@@ -218,6 +235,17 @@ namespace Assets
         public void TakeTurn(BlobScript me, List<BlobScript> allyBlobs, List<BlobScript> enemyBlobs)
         {
             _brain.TakeTurn(me, allyBlobs, enemyBlobs);
+        }
+
+        void OnMouseDown()
+        {
+            // this object was clicked - do something
+            //Destroy(this.gameObject);
+            debugMode = !debugMode;
+        }
+        public bool CheckDebugMenu()
+        {
+            return debugMode;
         }
 
 

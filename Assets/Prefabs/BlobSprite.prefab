@@ -100,6 +100,9 @@ MonoBehaviour:
   Defense: 0
   Initiative: 0
   _maxHealth: 0
+  _blobGridX: 0
+  _blobGridY: 0
+  debugMode: 0
 --- !u!1 &2222462725221741795
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +206,7 @@ GameObject:
   - component: {fileID: 8002270548827069391}
   - component: {fileID: 1323955340147449632}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: HealthDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
