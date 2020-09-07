@@ -1,4 +1,5 @@
-﻿using Assets.Services;
+﻿using Assets.Attacks.UltAttacks;
+using Assets.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,15 @@ namespace Assets
             _allyBlobs = allyBlobs;
             _enemyBlobs = enemyBlobs;
 
-            var a = new PunchAttack();
+            BaseAttack a = new PunchAttack();
             var targets = a.GetPossibleTargets(source, enemyBlobs.ToList());
+
+            if (source.GetUltCharge() >= 100)
+            {
+                a = new WhirlwindStrikeUlt();
+                a.FireAttack(_me, targets);
+            }
+
             if (targets.Count > 0)
             {
                 a.FireAttack(source, targets.First());

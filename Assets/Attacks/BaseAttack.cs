@@ -63,6 +63,12 @@ namespace Assets
             //Not done, needs a lot of work.
             return false;
         }
+        //Returns true if attack successfully fires. Returns false if target is illegal, or attack fails for some reason. 
+        public virtual bool FireAttack(BlobScript attacker, List<BlobScript> targets)
+        {
+            //Not done, needs a lot of work.
+            return false;
+        }
 
         //Returns true if attack successfully fires. Returns false if target is illegal, or attack fails for some reason. 
         public virtual bool FireSpell(BlobScript attacker, BlobScript target)

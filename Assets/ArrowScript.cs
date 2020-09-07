@@ -12,7 +12,15 @@ namespace Assets
         protected BaseAttack sourceAttack;
         protected int speed;
         protected int state = 1;
-        protected int timeToLive = 180;
+
+#if UNITY_EDITOR
+        protected float timeToLiveEditor = 180;
+#endif
+
+#if UNITY_STANDALONE
+        protected float timeToLive = 4;
+#endif
+
         // Start is called before the first frame update
         void Start()
         {
@@ -55,12 +63,25 @@ namespace Assets
                     MoveToTarget();
                     break;
                 case 3:
+
+#if UNITY_STANDALONE
+                    timeToLive -= Time.deltaTime;
+                    GetComponent<Rigidbody2D>().velocity = transform.up * 10000 * Time.deltaTime;
+                    if (timeToLive <= 0 || target == null || creator == null || (Math.Abs(target.transform.position.x - gameObject.transform.position.x) < 1 && Math.Abs(target.transform.position.y - gameObject.transform.position.y) < 1))
+                    {
+                        setState(4);
+                    }
+#endif
+
+#if UNITY_EDITOR
                     timeToLive--;
                     GetComponent<Rigidbody2D>().velocity = transform.up * 200 * Time.deltaTime;
                     if (timeToLive <= 0 || target == null || creator == null || (Math.Abs(target.transform.position.x - gameObject.transform.position.x) < 1 && Math.Abs(target.transform.position.y - gameObject.transform.position.y) < 1))
                     {
                         setState(4);
                     }
+#endif
+
                     break;
                 case 4:
                     FindObjectOfType<God>().EndTurn();

@@ -14,6 +14,8 @@ namespace Assets
         [SerializeField]
         private int Health;
         [SerializeField]
+        private int UltCharge;
+        [SerializeField]
         private int Attack;
         [SerializeField]
         private int SpecialAttack;
@@ -29,11 +31,18 @@ namespace Assets
         private IBrain _brain;
         private God _god;
         private Slider _healthBar;
+        private Slider _ultBar;
         private bool _isStealth;
         [SerializeField]
         private int _blobGridX;
         [SerializeField]
         private int _blobGridY;
+
+
+        [SerializeField]
+        private float _ultOnDealDamage = 1;
+        [SerializeField]
+        private float _ultOnRecieveDamage = 1;
 
         public int GetAttack()
         {
@@ -59,6 +68,11 @@ namespace Assets
         public int GetHealth()
         {
             return Health;
+        }
+
+        public int GetUltCharge()
+        {
+            return UltCharge;
         }
 
 
@@ -159,6 +173,8 @@ namespace Assets
             {
                 _god.KillBlob(this);
             }
+
+            ChargeUlt(0, damage);
         }
 
 
@@ -172,16 +188,25 @@ namespace Assets
             }
         }
 
+        public void ChargeUlt(int damageDealt, int damageRecieved)
+        {
+            UltCharge += (int)(damageDealt * _ultOnDealDamage);
+            UltCharge += (int)(damageRecieved * _ultOnRecieveDamage);
+        } 
+
 
 
         // Start is called before the first frame update
         void Start()
         {
-            _healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
+            var canvas = GetComponentInChildren<Canvas>();
+            _healthBar = canvas.transform.Find("HealthSlider").gameObject.GetComponent<Slider>();
             _healthBar.maxValue = Health;
             _healthBar.value = Health;
             Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
             barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
+
+            _ultBar = canvas.transform.Find("UltSlider").gameObject.GetComponent<Slider>();
             setRandomSprite();
             //Debug.Log("");
         }
@@ -225,6 +250,7 @@ namespace Assets
         void Update()
         {
             _healthBar.value = Health;
+            _ultBar.value = UltCharge;
             Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
             barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
         }

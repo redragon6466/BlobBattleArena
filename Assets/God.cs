@@ -141,6 +141,11 @@ namespace Assets
         // Update is called once per frame
         void Update()
         {
+            if (Input.GetKey("escape"))
+            {
+                Application.Quit();
+            }
+
             if (!_battleing)
             {
                 _vsTimer -= Time.deltaTime;

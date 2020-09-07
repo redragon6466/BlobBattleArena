@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets
+namespace Assets.Attacks.UltAttacks
 {
-    public class PunchAttack : BaseAttack
+    public class WhirlwindStrikeUlt : BaseAttack
     {
 
-        public override bool FireAttack(BlobScript source, BlobScript target)
+        public override bool FireAttack(BlobScript source, List<BlobScript> targets)
         {
             //Debug.Log("Firing Punch Attack");
             //Not done, needs a lot of work.
-            if (true)
-            //replace above statement with a range checker
+            foreach (var target in targets)
             {
                 ShowAttack(target, source);
                 int dmg = source.GetAttack() - target.GetDefense();
@@ -24,10 +26,10 @@ namespace Assets
                 target.TakeDamage(dmg);
                 source.ChargeUlt(dmg, 0);
             }
+            
 
             return true;
         }
-
 
         //clean up parent/attacker references
         //this should be moved into base attack, with the arrow being passed in as a references
@@ -40,7 +42,5 @@ namespace Assets
             ArrowScript myScript = myThing.GetComponent<ArrowScript>();
             myScript.setTargetAndParent(source, target, this);
         }
-
     }
 }
-
