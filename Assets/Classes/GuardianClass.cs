@@ -12,7 +12,7 @@ namespace Assets
 
         public GuardianClass()
         {
-            Health = 50;
+            Health = 0;
             Attack = 20;
             SpecialAttack = 0;
             Defense = 20;

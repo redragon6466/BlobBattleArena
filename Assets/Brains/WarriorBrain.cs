@@ -23,18 +23,21 @@ namespace Assets
 
             BaseAttack a = new PunchAttack();
             var targets = a.GetPossibleTargets(source, enemyBlobs.ToList());
-
+            /*
             if (source.GetUltCharge() >= 100)
             {
                 a = new WhirlwindStrikeUlt();
                 a.FireAttack(_me, targets);
-            }
+                _me.ResetUltCharge();
+                return;
+            }*/
 
             if (targets.Count > 0)
             {
                 a.FireAttack(source, targets.First());
                 return;
             }
+
 
             var close = 1000;
             var x = 0;
@@ -59,6 +62,7 @@ namespace Assets
                     }  
                 }
             }
+            
             var newGridLoc = MoveTo(myLoc, new Vector2(x, y), 5f);
             source.SetGridLocation((int)newGridLoc.x, (int)newGridLoc.y);
             source.transform.position = GridService.Instance.ConvertToPoint(newGridLoc);
@@ -75,6 +79,12 @@ namespace Assets
         private BlobScript DetermineTarget()
         {
             return ClostedBlob(_me, _enemyBlobs.ToList());
+        }
+
+        private void TrackAttacks()
+        {
+
+
         }
 
 

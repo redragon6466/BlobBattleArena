@@ -11,8 +11,6 @@ namespace Assets.Services
         private static AnimationService instance = null;
         
         private static readonly object padlock = new object();
-        private static readonly object teamOnePoolLock = new object();
-        private static readonly object teamTwoPoolLock = new object();
         
 
         AnimationService()

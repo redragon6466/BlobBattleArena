@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Assets
             var lowList = new List<BlobScript>();
 
             //prioritize low health allies
-
+            /*
             foreach (var ally in _allyBlobs)
             {
                 if (ally.GetHealth() < 50)
@@ -57,9 +58,11 @@ namespace Assets
 
             }
 
-            var target = DetermineTarget();
+            var target = DetermineTarget();*/
 
-            source.transform.position = MoveTo(source.transform.position, target.transform.position, 5f);
+           var safe =  MovementService.Instance.FindSafestInRange(_me, _enemyBlobs, _me.GetMovement());
+
+            source.transform.position = MoveTo(source.transform.position, safe, 5f);
             //source.GetComponent<Rigidbody2D>().MovePosition(MoveTo(source.transform.position, target.transform.position, 5f));
 
             UnityEngine.Object.FindObjectOfType<God>().EndTurn();

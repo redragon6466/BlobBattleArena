@@ -21,6 +21,12 @@ namespace Assets
             return BrainEnum.Test;
         }
 
+
+        protected virtual async void TrackAttacks()
+        {
+            //ovverride in child class
+        }
+
         /// <summary>
         /// Get the length of it, L, and multiply all components by M/L, where M is the new length of the vector.
         /// </summary>

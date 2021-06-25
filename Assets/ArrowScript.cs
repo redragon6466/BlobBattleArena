@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Services;
 
 namespace Assets
 {
@@ -12,6 +13,7 @@ namespace Assets
         protected BaseAttack sourceAttack;
         protected int speed;
         protected int state = 1;
+        protected int trackingCode;
 
 #if UNITY_EDITOR
         protected float timeToLiveEditor = 180;
@@ -40,11 +42,12 @@ namespace Assets
             state = stateValue;
             return true;
         }
-        public void setTargetAndParent(BlobScript parent, BlobScript enemy, BaseAttack source)
+        public void setTargetAndParent(BlobScript parent, BlobScript enemy, BaseAttack source, int code)
         {
             creator = parent;
             target = enemy;
             sourceAttack = source;
+            trackingCode = code;
 
 
             setState(2);
@@ -84,7 +87,7 @@ namespace Assets
 
                     break;
                 case 4:
-                    FindObjectOfType<God>().EndTurn();
+                    AttackService.Instance.CleanupAttack(trackingCode);
                     CleanUp();
                     break;
                 default:

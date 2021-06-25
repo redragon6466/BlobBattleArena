@@ -42,9 +42,9 @@ namespace Assets
 
 
         [SerializeField]
-        private float _ultOnDealDamage = 1;
+        private float _ultOnDealDamage = .1f;
         [SerializeField]
-        private float _ultOnRecieveDamage = 1;
+        private float _ultOnRecieveDamage = .1f;
 
         public int GetAttack()
         {
@@ -75,6 +75,11 @@ namespace Assets
         public int GetUltCharge()
         {
             return UltCharge;
+        }
+
+        public void ResetUltCharge()
+        {
+             UltCharge = 0;
         }
 
 
@@ -154,7 +159,7 @@ namespace Assets
             //string[] loadedImages = BlobCosmeticLoad.Instance.GiveImageNames();
             //string randomImage = loadedImages[loadedImages.Length - Random.Range(1,loadedImages.Length)];
             //string randomImage = loadedImages[0];
-            BlobCosmeticLoad.Instance.SetSpriteOnRenderer("Fritz", mrBlob);
+            BlobCosmeticLoad.Instance.SetSpriteOnRenderer("steam-community-kappa-kappa-transparent-background-768_768", mrBlob);
 
 
             //foreach (string x in loadedImages)
@@ -200,29 +205,29 @@ namespace Assets
 
         // Start is called before the first frame update
         void Start()
-        {
-<<<<<<< HEAD
-            var canvas = GetComponentInChildren<Canvas>();
-            _healthBar = canvas.transform.Find("HealthSlider").gameObject.GetComponent<Slider>();
-=======
+        { 
             //_healthBar = GetComponentInChildren<Canvas>().GetComponentInChildren<Slider>();
             //_healthBar = GetComponentsInChildren<Canvas>();
             foreach(Canvas myCanvas in GetComponentsInChildren<Canvas>())
             {
                 if(myCanvas.name == "HealthDisplay")
                 {
-                    _healthBar = myCanvas.GetComponentInChildren<Slider>();
+                    _healthBar = myCanvas.transform.gameObject.GetComponentInChildren<Slider>();
                 }
+                if (myCanvas.name == "UltDisplay")
+                {
+                    _ultBar = myCanvas.transform.gameObject.GetComponentInChildren<Slider>();
+                }
+
+
             }
 
-
->>>>>>> 8a599846fec75b6f917a3c81eca92f208b443226
             _healthBar.maxValue = Health;
             _healthBar.value = Health;
             Text barText = (Text)_healthBar.GetComponentInChildren(typeof(Text));
             barText.text = string.Format("{0}/{1}", _healthBar.value, _healthBar.maxValue);
 
-            _ultBar = canvas.transform.Find("UltSlider").gameObject.GetComponent<Slider>();
+           
             setRandomSprite();
             //Debug.Log("");
         }

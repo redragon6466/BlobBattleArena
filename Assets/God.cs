@@ -44,12 +44,13 @@ namespace Assets
         //private IClass[] _teamOneClasses = { new GuardianClass(), new GuardianClass(), new HealerClass(), };
         private IBrain[] _teamOneBrains = { new WarriorBrain() , new WarriorBrain(), new WarriorBrain(), };
         private IClass[] _teamOneClasses = { new WarriorClass() , new WarriorClass(), new WarriorClass(), };
-        private IBrain[] _teamTwoBrains = { new WarriorBrain() , new WarriorBrain(), new WarriorBrain(), };
-        private IClass[] _teamTwoClasses = { new WarriorClass() , new WarriorClass(), new WarriorClass(15), };
+        private IBrain[] _teamTwoBrains = { new HealerBrain(), new GuardianBrain(), new GuardianBrain(), };
+        private IClass[] _teamTwoClasses = { new HealerClass(), new GuardianClass(), new GuardianClass(), };
 
         //ARENA POSITIONS
         private Vector2[] _testOnePos = { new Vector2(9, 0) , new Vector2(10, 0), new Vector2(11, 0), };
-        private Vector2[] _testTwoPos = { new Vector2(3, 10), new Vector2(10, 10), new Vector2(17, 10), };
+        //private Vector2[] _testTwoPos = { new Vector2(3, 10), new Vector2(10, 10), new Vector2(17, 10), };
+        private Vector2[] _testTwoPos = { new Vector2(10, 3), new Vector2(10, 10), new Vector2(17, 10), };
 
         //LINEUP POSITIONS
         private Vector2[] _blueStartPos = { new Vector2(-3.67f, 2.76f), new Vector2(-3.67f, -.1f), new Vector2(-3.67f, -3.5f), };

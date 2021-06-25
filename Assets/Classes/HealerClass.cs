@@ -16,7 +16,7 @@ namespace Assets
             Attack = 20;
             SpecialAttack = 30;
             Defense = 10;
-            Initiative = 10;
+            Initiative = 100; // TESTING TODO FIX
             Movement = 5;
 
             AttackList = new List<BaseAttack> { new PunchAttack(), new Heal() };
